@@ -1,0 +1,119 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/EnemyExplosive.tscn" type="PackedScene" id=2]
+[ext_resource path="res://enemies/EnemyMelee.tscn" type="PackedScene" id=3]
+[ext_resource path="res://enemies/EnemyRanger.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Wall.tscn" type="PackedScene" id=5]
+[ext_resource path="res://enemies/EnemySniper.tscn" type="PackedScene" id=6]
+[ext_resource path="res://World.gd" type="Script" id=7]
+[ext_resource path="res://sprites/tile_repeated.png" type="Texture" id=8]
+[ext_resource path="res://ShaderBackground.gd" type="Script" id=9]
+[ext_resource path="res://point.gd" type="Script" id=10]
+[ext_resource path="res://sprites/circle.png" type="Texture" id=11]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec2 offset;
+uniform vec2 zoom = vec2(1.0, 1.0);
+uniform float scroll_speed = 1.0;
+
+void fragment()
+{
+    vec2 parallaxEffect = offset / scroll_speed * TEXTURE_PIXEL_SIZE;
+    COLOR = texture(TEXTURE, (UV + parallaxEffect) * zoom);
+}
+/*
+uniform float offset = 0.0;
+uniform float multiplier;
+
+void fragment() {
+    float u = offset * multiplier * TEXTURE_PIXEL_SIZE.x;
+    COLOR = texture(TEXTURE, vec2(UV.x + u, UV.y));
+}
+
+*/"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/offset = null
+shader_param/zoom = Vector2( 1, 1 )
+shader_param/scroll_speed = 1.0
+
+[node name="World" type="Node2D"]
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Entities" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Player" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 530.29, 317.526 )
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Entities/Player"]
+remote_path = NodePath("../../../Camera2D")
+update_rotation = false
+update_scale = false
+
+[node name="EnemyExplosive" parent="Entities" instance=ExtResource( 2 )]
+position = Vector2( 959.972, 560.977 )
+
+[node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 28.3191, 581.925 )
+
+[node name="EnemyRanger" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 984.525, 32.4897 )
+
+[node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
+position = Vector2( -40.2132, -84.6395 )
+
+[node name="Bullets" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Obstacles" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" parent="Obstacles" instance=ExtResource( 5 )]
+position = Vector2( 574.751, 749.554 )
+scale = Vector2( 5, 5 )
+
+[node name="StaticBody2D2" parent="Obstacles" instance=ExtResource( 5 )]
+position = Vector2( 956.138, 622.735 )
+scale = Vector2( 7, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 530.29, 317.526 )
+current = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="point" type="Sprite" parent="."]
+position = Vector2( 502.76, 642.814 )
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+script = ExtResource( 10 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ShaderBackground" type="Sprite" parent="CanvasLayer"]
+modulate = Color( 0.807843, 0.807843, 0.807843, 1 )
+material = SubResource( 2 )
+texture = ExtResource( 8 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1920, 1080 )
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
