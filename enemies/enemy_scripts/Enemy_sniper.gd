@@ -8,7 +8,7 @@ var max_speed = 300
 var movement = Vector2.ZERO
 var friction = 0.85
 var player = null
-var max_health = 12
+var max_health = 16
 var health = max_health setget set_health
 
 onready var detection_range = $DetectionRange/CollisionShape2D.shape.radius

@@ -11,18 +11,17 @@ extents = Vector2( 15, 15 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 15, 15 )
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 15.3983, 15.536 )
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 18.9126
 height = 30.2635
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=5]
 radius = 61.5796
 
-[sub_resource type="Animation" id=5]
-resource_name = "melee attack"
+[sub_resource type="Animation" id=6]
 length = 0.15
 step = 0.05
 tracks/0/type = "value"
@@ -50,7 +49,7 @@ tracks/1/keys = {
 "values": [ -30.0, 30.0 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:modulate")
@@ -77,8 +76,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "melee combo 1"
+[sub_resource type="Animation" id=8]
 length = 0.15
 step = 0.05
 tracks/0/type = "value"
@@ -130,8 +128,7 @@ tracks/3/keys = {
 "values": [ 1 ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "melee combo 2"
+[sub_resource type="Animation" id=9]
 length = 0.15
 step = 0.05
 tracks/0/type = "value"
@@ -183,8 +180,7 @@ tracks/3/keys = {
 "values": [ 2 ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "melee combo 3"
+[sub_resource type="Animation" id=10]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -236,7 +232,7 @@ tracks/3/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 1.5
 step = 0.05
 tracks/0/type = "value"
@@ -298,7 +294,7 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionArea"]
 visible = false
-shape = SubResource( 11 )
+shape = SubResource( 3 )
 
 [node name="AttackDirection" type="Position2D" parent="."]
 
@@ -320,7 +316,7 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDirection/MeleeHitbox"]
 visible = false
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 disabled = true
 
 [node name="CircularMeleeHitbox" type="Area2D" parent="AttackDirection"]
@@ -331,7 +327,7 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDirection/CircularMeleeHitbox"]
 visible = false
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 disabled = true
 
 [node name="DashRayCast" type="RayCast2D" parent="."]
@@ -343,14 +339,14 @@ bar_color = Color( 0.0352941, 0.243137, 0.94902, 1 )
 bar_critical_color = Color( 0.52549, 0.0509804, 0.364706, 1 )
 
 [node name="PlayerHitAnimator" type="AnimationPlayer" parent="."]
-"anims/melee attack" = SubResource( 5 )
-"anims/player hit" = SubResource( 6 )
+"anims/melee attack" = SubResource( 6 )
+"anims/player hit" = SubResource( 7 )
 
 [node name="MeleeAttackAnimator" type="AnimationPlayer" parent="."]
-"anims/melee combo 1" = SubResource( 7 )
-"anims/melee combo 2" = SubResource( 8 )
-"anims/melee combo 3" = SubResource( 9 )
-"anims/player hit" = SubResource( 10 )
+"anims/melee combo 1" = SubResource( 8 )
+"anims/melee combo 2" = SubResource( 9 )
+"anims/melee combo 3" = SubResource( 10 )
+"anims/player hit" = SubResource( 11 )
 
 [connection signal="body_entered" from="AttackDirection/MeleeHitbox" to="." method="_on_MeleeHitbox_body_entered"]
 [connection signal="body_entered" from="AttackDirection/CircularMeleeHitbox" to="." method="_on_CircularMeleeHitbox_body_entered"]

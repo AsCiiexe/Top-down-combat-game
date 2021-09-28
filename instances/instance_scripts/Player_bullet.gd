@@ -1,6 +1,6 @@
 extends Position2D
 
-var speed = 1500
+var speed = 1250
 var direction = Vector2.ZERO
 var lifespan = 2.5
 var count = 0
