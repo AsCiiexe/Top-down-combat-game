@@ -8,7 +8,7 @@ var max_speed = 400
 var movement = Vector2.ZERO
 var friction = 0.85
 var player = null
-var max_health = 8
+var max_health = 12
 var health = max_health setget set_health
 var damage = 7
 

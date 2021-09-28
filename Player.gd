@@ -28,16 +28,20 @@ var melee_dmg = 2.5
 var final_melee_dmg = 4
 export var combo = 0
 
+var a1_cooldown = 5.0
+var a1_cd = 0
+
+var a2_cooldown = 7.5
+var a2_cd = 0
+
 var dash_target = Vector2.ZERO #dash_target in global coords
 var dash_direction = Vector2.ZERO #dash_target direction in local coords
 var min_dash_distance = 100
 var max_dash_distance = 600
 var dash_distance = 0
-var distance_travelled = 0
 var dash_speed = 2000
 var dash_cooldown = 0.8
 var dash_cd = 0
-var last_position = Vector2.ZERO #used to calculate the current distance travelled by the dash
 
 
 
@@ -46,6 +50,8 @@ func _physics_process(delta):
 	melee_cd -= delta
 	combo_cd -= delta
 	dash_cd -= delta
+	a1_cd -= delta
+	a2_cd -= delta
 	
 	movement_input = Vector2.ZERO
 	get_input()
@@ -62,15 +68,13 @@ func _physics_process(delta):
 		
 		states.DASHING:
 			movement = dash_direction * dash_speed
-			distance_travelled += global_position.distance_to(last_position)
-			#if the dash collisions get kinda dodgy with walls try adding "or get_slide_collision(0) != null" on the if
-			if distance_travelled >= dash_distance:
+			if movement.length() * delta > global_position.distance_to(dash_target) or get_slide_collision(0) != null:
+				global_position = dash_target
 				$Sprite.modulate.a = 1.0
 				$HurtBox/CollisionShape2D.set_deferred("disabled", false) #stop invulnerability
 				collision_layer = 2 #stop going through entities
 				collision_mask = 3 #if either the layer OR mask collide with bodies they still count as collisions
 				state = states.MOVING
-			last_position = global_position
 	movement = move_and_slide(movement)
 
 
@@ -97,6 +101,14 @@ func get_input():
 		if dash_cd <= 0:
 			dash()
 			dash_cd = dash_cooldown
+	if Input.is_action_pressed("ability_1"):
+		if a1_cd <= 0 and state == states.MOVING:
+			ability_1()
+			a1_cd = a1_cooldown
+	if Input.is_action_pressed("ability_2"):
+		if a2_cd <= 0 and state == states.MOVING:
+			ability_2()
+			a2_cd = a2_cooldown
 
 
 
@@ -109,23 +121,19 @@ func set_health(value):
 	if health <= 0:
 		get_tree().reload_current_scene()
 
-
-
 func dash():
 	dash_distance = max(min_dash_distance, min(max_dash_distance, get_local_mouse_position().length()))
 	dash_target = get_local_mouse_position().normalized() * dash_distance
 	dash_direction = dash_target.normalized()
 	validate_position()
 	dash_target = to_global(dash_target)
-	distance_travelled = 0
-	last_position = global_position
 	$Sprite.modulate.a = 0.25
 	$HurtBox/CollisionShape2D.set_deferred("disabled", true)
 	collision_layer = 0 #go through entities
 	collision_mask = 1 #still collide with walls
 	state = states.DASHING
 
-#!WARNING! THIS DOES NOT ALWAYS WORK WELL, I'm not sure why
+
 func validate_position():
 	$DashRayCast.cast_to = dash_target
 	$DashRayCast.force_raycast_update()
@@ -139,7 +147,7 @@ func fire_bullet():
 	var bullet_instance = DataManager.PlayerBullet.instance()
 	bullet_instance.position = global_position
 	bullet_instance.direction = global_position.direction_to(get_global_mouse_position())
-	DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
+	DataManager.ObstaclesNode.call_deferred("add_child", bullet_instance)
 	#if the bullet is a rigidbody use this instead vv
 	#bullet_instance.apply_impulse(Vector2(), Vector2(0,0).rotated(rotation))
 
@@ -170,6 +178,18 @@ func melee_attack():
 		$MeleeAttackAnimator.play("melee combo 3")#animationplayer can only play one animation at a time
 		movement += movement_input * (acceleration * 15)
 		movement = movement.clamped(max_speed * 1.6)
+
+func ability_1():
+	var charged_bullet_instance = DataManager.PlayerChargedBullet.instance()
+	charged_bullet_instance.position = global_position
+	charged_bullet_instance.direction = get_local_mouse_position().normalized()
+	charged_bullet_instance.look_at(get_global_mouse_position())
+	DataManager.BulletsNode.call_deferred("add_child", charged_bullet_instance)
+
+func ability_2():
+	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
+	explosion_instance.position = get_global_mouse_position()
+	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
 
 func _on_MeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):

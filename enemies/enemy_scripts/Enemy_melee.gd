@@ -14,7 +14,7 @@ var acceleration = 180 #the higher this is not only the faster it gets to max bu
 var movement = Vector2.ZERO
 var friction = 0.85
 var player = null
-var max_health = 20
+var max_health = 24
 var health = max_health setget set_health
 
 var damage = 2

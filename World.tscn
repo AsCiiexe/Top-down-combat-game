@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/EnemyExplosive.tscn" type="PackedScene" id=2]
@@ -9,8 +9,6 @@
 [ext_resource path="res://World.gd" type="Script" id=7]
 [ext_resource path="res://sprites/tile_repeated.png" type="Texture" id=8]
 [ext_resource path="res://ShaderBackground.gd" type="Script" id=9]
-[ext_resource path="res://point.gd" type="Script" id=10]
-[ext_resource path="res://sprites/circle.png" type="Texture" id=11]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -47,6 +45,24 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Obstacles" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="StaticBody2D" parent="Obstacles" instance=ExtResource( 5 )]
+position = Vector2( 574.751, 749.554 )
+scale = Vector2( 5, 5 )
+
+[node name="StaticBody2D2" parent="Obstacles" instance=ExtResource( 5 )]
+position = Vector2( 956.138, 622.735 )
+scale = Vector2( 7, 1 )
+
+[node name="Bullets" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Entities" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
@@ -72,36 +88,12 @@ position = Vector2( 984.525, 32.4897 )
 [node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
 position = Vector2( -40.2132, -84.6395 )
 
-[node name="Bullets" type="Node2D" parent="."]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Obstacles" type="Node2D" parent="."]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="StaticBody2D" parent="Obstacles" instance=ExtResource( 5 )]
-position = Vector2( 574.751, 749.554 )
-scale = Vector2( 5, 5 )
-
-[node name="StaticBody2D2" parent="Obstacles" instance=ExtResource( 5 )]
-position = Vector2( 956.138, 622.735 )
-scale = Vector2( 7, 1 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 530.29, 317.526 )
 current = true
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="point" type="Sprite" parent="."]
-position = Vector2( 502.76, 642.814 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 11 )
-script = ExtResource( 10 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
