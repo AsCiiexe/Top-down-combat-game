@@ -1,0 +1,18 @@
+[gd_scene format=2]
+
+[node name="Interface" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -75.0
+margin_right = 412.0
+color = Color( 0, 0.576471, 1, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

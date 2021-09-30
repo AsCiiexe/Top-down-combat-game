@@ -28,11 +28,14 @@ var melee_dmg = 2.5
 var final_melee_dmg = 4
 export var combo = 0
 
-var a1_cooldown = 5.0
+var a1_cooldown = 4.5
 var a1_cd = 0
 
 var a2_cooldown = 7.5
 var a2_cd = 0
+
+var a3_cooldown = 5.0
+var a3_cd = 0
 
 var dash_target = Vector2.ZERO #dash_target in global coords
 var dash_direction = Vector2.ZERO #dash_target direction in local coords
@@ -42,7 +45,6 @@ var dash_distance = 0
 var dash_speed = 2000
 var dash_cooldown = 0.8
 var dash_cd = 0
-
 
 
 func _physics_process(delta):
@@ -76,7 +78,6 @@ func _physics_process(delta):
 				collision_mask = 3 #if either the layer OR mask collide with bodies they still count as collisions
 				state = states.MOVING
 	movement = move_and_slide(movement)
-
 
 
 func get_input():
