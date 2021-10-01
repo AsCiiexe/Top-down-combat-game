@@ -9,7 +9,7 @@ var state = states.MOVING
 var asdasdasdasd
 var acceleration = 100
 var acceleration_buffs = 0 #temporary buffs that makes the player accelerate faster
-var max_speed = 500
+var max_speed = 380
 var speed_buffs = 0 #temporary buffs that give the player a higher max speed cap
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
@@ -28,10 +28,12 @@ var melee_dmg = 2.5
 var final_melee_dmg = 4
 export var combo = 0
 
-var a1_cooldown = 4.5
+#charged shot
+var a1_cooldown = 3.5
 var a1_cd = 0
 
-var a2_cooldown = 7.5
+#ground explosion
+var a2_cooldown = 6.0
 var a2_cd = 0
 
 var a3_cooldown = 5.0
@@ -102,15 +104,17 @@ func get_input():
 		if dash_cd <= 0:
 			dash()
 			dash_cd = dash_cooldown
+			DataManager.Interface.set_ability_on_cooldown(-1)
 	if Input.is_action_pressed("ability_1"):
 		if a1_cd <= 0 and state == states.MOVING:
 			ability_1()
 			a1_cd = a1_cooldown
+			DataManager.Interface.set_ability_on_cooldown(1)
 	if Input.is_action_pressed("ability_2"):
 		if a2_cd <= 0 and state == states.MOVING:
 			ability_2()
 			a2_cd = a2_cooldown
-
+			DataManager.Interface.set_ability_on_cooldown(2)
 
 
 func set_health(value):
@@ -121,6 +125,7 @@ func set_health(value):
 	$HealthbarControl.on_health_updated(health)
 	if health <= 0:
 		get_tree().reload_current_scene()
+
 
 func dash():
 	dash_distance = max(min_dash_distance, min(max_dash_distance, get_local_mouse_position().length()))
@@ -153,7 +158,6 @@ func fire_bullet():
 	#bullet_instance.apply_impulse(Vector2(), Vector2(0,0).rotated(rotation))
 
 
-
 func melee_attack():
 	if combo_cd <= 0:
 		combo = 0
@@ -180,6 +184,7 @@ func melee_attack():
 		movement += movement_input * (acceleration * 15)
 		movement = movement.clamped(max_speed * 1.6)
 
+
 func ability_1():
 	var charged_bullet_instance = DataManager.PlayerChargedBullet.instance()
 	charged_bullet_instance.position = global_position
@@ -187,10 +192,12 @@ func ability_1():
 	charged_bullet_instance.look_at(get_global_mouse_position())
 	DataManager.BulletsNode.call_deferred("add_child", charged_bullet_instance)
 
+
 func ability_2():
 	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
 	explosion_instance.position = get_global_mouse_position()
 	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
+
 
 func _on_MeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):

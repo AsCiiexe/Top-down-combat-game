@@ -8,7 +8,7 @@
 extents = Vector2( 15.4859, 15.4126 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 600.94
+radius = 650.0
 
 [node name="EnemySniper" type="KinematicBody2D" groups=[
 "enemy",
@@ -34,7 +34,6 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange"]
-visible = false
 shape = SubResource( 2 )
 
 [node name="HealthbarControl" parent="." instance=ExtResource( 3 )]

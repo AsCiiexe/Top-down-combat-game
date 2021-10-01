@@ -11,12 +11,16 @@ onready var Player = get_tree().get_root().get_node("World/Entities/Player")
 onready var BulletsNode = get_tree().get_root().get_node("World/Bullets")
 onready var ObstaclesNode = get_tree().get_root().get_node("World/Obstacles")
 onready var CurrentCamera = get_tree().get_root().get_node("World/Camera2D") 
+onready var Interface = get_tree().get_root().get_node("World/Foreground/Interface")
 
-func reset_vars():#when the scene is reloaded this has to be reset
+
+func reset_addresses():#when the scene is reloaded these have to be reset
 	Player = get_tree().get_root().get_node("World/Entities/Player")
 	BulletsNode = get_tree().get_root().get_node("World/Bullets")
 	ObstaclesNode = get_tree().get_root().get_node("World/Obstacles")
 	CurrentCamera = get_tree().get_root().get_node("World/Camera2D")
+	Interface = get_tree().get_root().get_node("World/Foreground/Interface")
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("restart"):
@@ -24,3 +28,4 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+

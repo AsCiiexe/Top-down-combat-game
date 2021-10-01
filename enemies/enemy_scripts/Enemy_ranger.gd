@@ -3,8 +3,8 @@ extends KinematicBody2D
 enum states{IDLE, CHASE, STAND}
 var state = states.IDLE
 
-var acceleration = 180 #the higher this is not only the faster it gets to max but the tighter it turns
-var max_speed = 300
+var acceleration = 140 #the higher this is not only the faster it gets to max but the tighter it turns
+var max_speed = 220
 var movement = Vector2.ZERO
 var friction = 0.85
 var player = null

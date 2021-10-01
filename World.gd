@@ -2,13 +2,14 @@ extends Node2D
 
 var camera = DataManager.CurrentCamera
 var player = DataManager.Player
+
 var mouse = get_global_mouse_position()
 var camera_distance = 0
 var max_camera_distance = get_viewport_rect().size / 2
 var camera_position = Vector2.ZERO
 
 func _ready():
-	DataManager.reset_vars()#vars that need to be reloaded when reloading the scene will do so
+	DataManager.reset_addresses()#addresses that need to be reloaded when reloading the scene will do so
 
 func _physics_process(delta):
 	player = DataManager.Player
