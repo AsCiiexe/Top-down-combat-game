@@ -73,16 +73,16 @@ __meta__ = {
 position = Vector2( 530.29, 317.526 )
 
 [node name="EnemyExplosive" parent="Entities" instance=ExtResource( 2 )]
-position = Vector2( 959.972, 560.977 )
+position = Vector2( 1839.61, 1038.98 )
 
 [node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 28.3191, 581.925 )
+position = Vector2( -172.499, 1062.76 )
 
 [node name="EnemyRanger" parent="Entities" instance=ExtResource( 4 )]
-position = Vector2( 984.525, 32.4897 )
+position = Vector2( 1838.71, 29.6613 )
 
 [node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -40.2132, -84.6395 )
+position = Vector2( -388.11, -175.149 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 530.29, 317.526 )
@@ -94,6 +94,10 @@ __meta__ = {
 [node name="Foreground" type="CanvasLayer" parent="."]
 
 [node name="Interface" parent="Foreground" instance=ExtResource( 10 )]
+margin_left = -2.82849
+margin_top = 2.82843
+margin_right = -2.82849
+margin_bottom = 2.82843
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1

@@ -10,6 +10,9 @@ func _ready():
 	healthbarUnder.max_value = get_parent().max_health
 	healthbarOver.modulate = bar_color
 
+func _physics_process(delta):
+	print("here healthbar")
+
 #healthbar over loses the health instantly
 #healthbar under, colored red, loses it with a tween
 #this is to add a cool effect while also still letting the player know their current health

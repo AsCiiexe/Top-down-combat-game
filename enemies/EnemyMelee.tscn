@@ -9,7 +9,7 @@
 extents = Vector2( 15.7132, 15.6518 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 400.0
+radius = 650.0
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 40.95

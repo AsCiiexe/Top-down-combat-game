@@ -8,7 +8,7 @@
 extents = Vector2( 15.4859, 15.4126 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 650.0
+radius = 1000.0
 
 [node name="EnemySniper" type="KinematicBody2D" groups=[
 "enemy",

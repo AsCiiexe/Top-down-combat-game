@@ -6,10 +6,9 @@ extends KinematicBody2D
 #dashing gives the player damage invulnerability and disables inputs
 enum states{MOVING, ATTACKING, DASHING}
 var state = states.MOVING
-var asdasdasdasd
-var acceleration = 100
+var acceleration = 125
 var acceleration_buffs = 0 #temporary buffs that makes the player accelerate faster
-var max_speed = 380
+var max_speed = 350
 var speed_buffs = 0 #temporary buffs that give the player a higher max speed cap
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
@@ -20,13 +19,16 @@ var health = max_health setget set_health
 
 var shooting_speed = 0.35
 var shooting_cd = 0
-
-var melee_cooldown = 0.35
+var shooting_slow = 0.6 #while shooting the character moves slower for the duration of the shot cd
+var melee_cooldown = 0.35 #how fast the player attacks
 var melee_cd = 0
-var combo_cd = 0
+var combo_cd = 0 #the time in which if the player attacks again the combo will continue instead of starting again
 var melee_dmg = 2.5
 var final_melee_dmg = 4
-export var combo = 0
+export var combo = 0 #current combo iteration, this is exported for the animation player to be able to continue the combo
+
+var casting_slow = 0.5 #how much the player gets slowed when casting and ability
+var casting_slow_duration = 0.45 #how long the slow lasts
 
 #charged shot
 var a1_cooldown = 3.5
@@ -42,10 +44,10 @@ var a3_cd = 0
 var dash_target = Vector2.ZERO #dash_target in global coords
 var dash_direction = Vector2.ZERO #dash_target direction in local coords
 var min_dash_distance = 100
-var max_dash_distance = 600
+var max_dash_distance = 420
 var dash_distance = 0
-var dash_speed = 2000
-var dash_cooldown = 0.8
+var dash_speed = 1250
+var dash_cooldown = 1.85
 var dash_cd = 0
 
 
@@ -65,6 +67,8 @@ func _physics_process(delta):
 			movement = movement.clamped(max_speed + speed_buffs)
 			if movement_input == Vector2.ZERO:
 				movement *= friction
+			elif shooting_cd > 0:
+				movement *= shooting_slow
 		states.ATTACKING:
 			if melee_cd <= 0:
 				state = states.MOVING
@@ -73,6 +77,8 @@ func _physics_process(delta):
 		states.DASHING:
 			movement = dash_direction * dash_speed
 			if movement.length() * delta > global_position.distance_to(dash_target) or get_slide_collision(0) != null:
+				dash_cd = dash_cooldown
+				DataManager.Interface.set_ability_on_cooldown(-1)
 				global_position = dash_target
 				$Sprite.modulate.a = 1.0
 				$HurtBox/CollisionShape2D.set_deferred("disabled", false) #stop invulnerability
@@ -103,8 +109,7 @@ func get_input():
 	if Input.is_action_just_released("dash"):
 		if dash_cd <= 0:
 			dash()
-			dash_cd = dash_cooldown
-			DataManager.Interface.set_ability_on_cooldown(-1)
+			#cooldown is applied when the dash ends instead of when it starts
 	if Input.is_action_pressed("ability_1"):
 		if a1_cd <= 0 and state == states.MOVING:
 			ability_1()

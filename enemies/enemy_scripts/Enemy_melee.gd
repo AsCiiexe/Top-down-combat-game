@@ -9,12 +9,12 @@ onready var attackSprite = $AttackDirection/AttackPivot/AttackSprite
 enum states{IDLE, CHASE, MELEE}
 var state = states.IDLE
 
-var max_speed = 260
-var acceleration = 140 #the higher this is not only the faster it gets to max but the tighter it turns
+var max_speed = 280
+var acceleration = 80 #the higher this is not only the faster it gets to max but the tighter it turns
 var movement = Vector2.ZERO
-var friction = 0.85
+var friction = 0.92
 var player = null
-var max_health = 24
+var max_health = 22
 var health = max_health setget set_health
 
 var damage = 2
