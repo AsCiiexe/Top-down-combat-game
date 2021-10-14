@@ -4,7 +4,7 @@ var speed = 1150
 var direction = Vector2.ZERO
 var lifespan = 3.5
 var count = 0
-var damage = 10
+var damage = 7.0
 
 func _physics_process(delta):
 	position += direction * speed * delta

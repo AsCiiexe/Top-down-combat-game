@@ -1,10 +1,10 @@
 extends Position2D
 
-var speed = 3500
+var speed = 2800
 var direction = Vector2.ZERO
 var lifespan = 2.25
 var count = 0
-var damage = 2
+var damage = 5
 var deleted = false
 
 func _ready():
