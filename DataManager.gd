@@ -24,6 +24,7 @@ func reset_addresses():#when the scene is reloaded these have to be reset
 
 func _unhandled_input(event):
 	if event.is_action_pressed("restart"):
+# warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
 	
 	if event.is_action_pressed("ui_cancel"):

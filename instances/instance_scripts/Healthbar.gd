@@ -5,13 +5,12 @@ onready var healthbarUnder = $HealthbarUnder
 onready var updateTween = $UpdateTween
 export(Color) var bar_color = Color.white
 export(Color) var bar_critical_color = Color.darkgray
+
 func _ready():
 	healthbarOver.max_value = get_parent().max_health
 	healthbarUnder.max_value = get_parent().max_health
 	healthbarOver.modulate = bar_color
 
-func _physics_process(delta):
-	print("here healthbar")
 
 #healthbar over loses the health instantly
 #healthbar under, colored red, loses it with a tween

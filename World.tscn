@@ -82,7 +82,7 @@ position = Vector2( -172.499, 1062.76 )
 position = Vector2( 1838.71, 29.6613 )
 
 [node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -388.11, -175.149 )
+position = Vector2( -537.941, 10.6411 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 530.29, 317.526 )

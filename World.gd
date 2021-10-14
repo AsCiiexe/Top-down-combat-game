@@ -3,9 +3,9 @@ extends Node2D
 var camera = DataManager.CurrentCamera
 var player = DataManager.Player
 
-var mouse = get_global_mouse_position()
-var camera_distance = 0
-var max_camera_distance = get_viewport_rect().size / 2
+var mouse = Vector2.ZERO
+var camera_distance = 0 #length of the camera distance
+var max_camera_distance = Vector2.ZERO #area limits for the camera distance
 var camera_position = Vector2.ZERO
 
 func _ready():

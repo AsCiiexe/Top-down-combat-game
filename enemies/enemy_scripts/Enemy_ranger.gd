@@ -4,7 +4,7 @@ enum states{IDLE, CHASE, STAND}
 var state = states.IDLE
 
 var acceleration = 100 #the higher this is not only the faster it gets to max but the tighter it turns
-var max_speed = 270
+var max_speed = 230
 var movement = Vector2.ZERO
 var friction = 0.85
 var player = null
