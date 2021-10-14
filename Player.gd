@@ -139,7 +139,7 @@ func get_input():
 			#cooldown set inside melee_attack() depending on combo
 	
 	if Input.is_action_just_released("dash"):
-		if dash_cd <= 0:
+		if dash_cd <= 0 and state == states.MOVING: #can't dash while casting or already dashing
 			dash()
 			#cooldown is applied when the dash ends instead of when it starts
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://enemies/enemy_scripts/Enemy_melee.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
@@ -7,12 +7,6 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.7132, 15.6518 )
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 650.0
-
-[sub_resource type="CircleShape2D" id=3]
-radius = 40.95
 
 [sub_resource type="CapsuleShape2D" id=4]
 radius = 13.4778
@@ -76,25 +70,6 @@ texture = ExtResource( 2 )
 visible = false
 shape = SubResource( 1 )
 
-[node name="DetectionRange" type="Area2D" parent="."]
-input_pickable = false
-monitorable = false
-collision_layer = 0
-collision_mask = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange"]
-shape = SubResource( 2 )
-
-[node name="AttackRange" type="Area2D" parent="."]
-input_pickable = false
-monitorable = false
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
-visible = false
-shape = SubResource( 3 )
-
 [node name="AttackDirection" type="Position2D" parent="."]
 
 [node name="AttackPivot" type="Position2D" parent="AttackDirection"]
@@ -103,12 +78,12 @@ rotation = 0.523599
 [node name="AttackSprite" type="Sprite" parent="AttackDirection/AttackPivot"]
 visible = false
 modulate = Color( 1, 0.576471, 0.239216, 1 )
-position = Vector2( 40, 0 )
+position = Vector2( 45, 0 )
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 3 )
 
 [node name="AttackHitbox" type="Area2D" parent="AttackDirection"]
-position = Vector2( 40, 0 )
+position = Vector2( 45, 0 )
 input_pickable = false
 monitorable = false
 collision_layer = 0
@@ -126,10 +101,4 @@ bar_critical_color = Color( 1, 1, 1, 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 5 )
 
-[connection signal="area_entered" from="DetectionRange" to="." method="_on_DetectionRange_area_entered"]
-[connection signal="area_exited" from="DetectionRange" to="." method="_on_DetectionRange_area_exited"]
-[connection signal="body_entered" from="DetectionRange" to="." method="_on_DetectionRange_body_entered"]
-[connection signal="body_exited" from="DetectionRange" to="." method="_on_DetectionRange_body_exited"]
-[connection signal="body_entered" from="AttackRange" to="." method="_on_AttackRange_body_entered"]
-[connection signal="body_exited" from="AttackRange" to="." method="_on_AttackRange_body_exited"]
 [connection signal="area_entered" from="AttackDirection/AttackHitbox" to="." method="_on_AttackHitbox_area_entered"]
