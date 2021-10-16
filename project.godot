@@ -16,7 +16,7 @@ config/icon="res://sprites/icon.png"
 
 [autoload]
 
-DataManager="*res://DataManager.gd"
+DataManager="*res://scripts/DataManager.gd"
 
 [input]
 
