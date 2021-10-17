@@ -50,11 +50,6 @@ func colliding():
 		$RayCast2D.get_collider().owner.health -= damage
 		$Sprite.visible = false
 		deleted = true
-		
-		var stun_mod = DataManager.StunMod.instance()
-		stun_mod.mod_duration = 1.25
-		DataManager.Player.call_deferred("add_child", stun_mod)
-		
 	elif $RayCast2D.get_collider().is_in_group("obstacle"):
 		$Sprite.visible = false
 		deleted = true

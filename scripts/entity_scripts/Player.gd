@@ -15,18 +15,18 @@ var friction = 0.85 #the higher, the more slippery it will be
 var movement_input = Vector2.ZERO
 ##############################
 
-########## - HEALTH - ##########
+########## - DEFENSIVE STATS - ##########
 var max_health = 20
 var health = max_health setget set_health
 ######################################
 
-########## - BASIC SHOOTING - ##########
+########## - BASIC ATTACKS - ##########
+#basic shooting
 var shooting_speed = 0.35
 var shooting_cd = 0
 var shooting_slow = 0.65 #while shooting the character moves slower for the duration of the shot cd
-##############################
 
-########## - BASIC MELEE - ##########
+#basic melee
 var melee_cooldown = 0.48 #how fast the player attacks
 var melee_cd = 0 #current attack cd
 var combo_cd = 0 #the time in which if the player attacks again the combo will continue instead of starting again
@@ -77,10 +77,9 @@ var rooted = false #this entity can't move or use movement spells while rooted
 var cooldown_reduction = 0
 var speed_mod = 0
 var dmg_mod = 0
-var att_speed_mod = 0
 
 #stat multipliers
-#empty for now
+var att_speed_mult = 1
 ##############################
 
 
@@ -120,7 +119,7 @@ func _physics_process(delta):
 			movement = dash_direction * dash_speed
 			if movement.length() * delta > global_position.distance_to(dash_target) or get_slide_collision(0) != null:
 				dash_cd = dash_cooldown
-				DataManager.Interface.set_ability_on_cooldown(-1)
+				DataManager.Interface.set_ability_on_cooldown(-1, dash_cd)
 				$Sprite.modulate.a = 1.0
 				$HurtBox/CollisionShape2D.set_deferred("disabled", false) #stop invulnerability
 				collision_layer = 2 #stop going through entities
@@ -175,14 +174,14 @@ func get_input():
 			ability_1()
 			a1_cd = a1_cooldown
 			casting_duration = a1_cast_time
-			DataManager.Interface.set_ability_on_cooldown(1)
+			DataManager.Interface.set_ability_on_cooldown(1, a1_cd)
 	
 	if Input.is_action_pressed("ability_2"):
 		if a2_cd <= 0 and state == states.MOVING and not silenced:
-			ability_2()
-			a2_cd = a2_cooldown
-			casting_duration = a2_cast_time
-			DataManager.Interface.set_ability_on_cooldown(2)
+			if Input.is_action_pressed("variant"):
+				ability_2_variant()
+			else:
+				ability_2()
 
 
 func set_health(value):
@@ -227,7 +226,7 @@ func fire_bullet():
 	DataManager.ObstaclesNode.call_deferred("add_child", bullet_instance)
 	#if the bullet is a rigidbody use this instead vv
 	#bullet_instance.apply_impulse(Vector2(), Vector2(0,0).rotated(rotation))
-	shooting_cd = shooting_speed
+	shooting_cd = shooting_speed * att_speed_mult
 
 
 func melee_attack():
@@ -235,7 +234,7 @@ func melee_attack():
 		combo = 0
 	
 	if combo == 0:
-		melee_cd = melee_cooldown * 0.85
+		melee_cd = (melee_cooldown * 0.85) * att_speed_mult
 		#state = states.CASTING
 		combo_cd = 0.88
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -243,7 +242,7 @@ func melee_attack():
 		movement += movement_input * (acceleration * 10)
 		movement = movement.clamped(max_speed * 1.4)
 	elif combo == 1:
-		melee_cd = melee_cooldown
+		melee_cd = melee_cooldown * att_speed_mult
 		#state = states.CASTING
 		combo_cd = 1.08
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -251,7 +250,7 @@ func melee_attack():
 		movement += movement_input * (acceleration * 10)
 		movement = movement.clamped(max_speed * 1.4)
 	elif combo == 2:
-		melee_cd = melee_cooldown * 1.35
+		melee_cd = (melee_cooldown * 1.35) * att_speed_mult
 		#state = states.CASTING
 		combo_cd = 0
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -274,7 +273,21 @@ func ability_2():
 	explosion_instance.position = get_global_mouse_position()
 	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
 	state = states.CASTING
+	
+	a2_cd = a2_cooldown
+	casting_duration = a2_cast_time
+	DataManager.Interface.set_ability_on_cooldown(2, a2_cd)
 
+func ability_2_variant():
+	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
+	explosion_instance.position = get_global_mouse_position()
+	explosion_instance.flash_variant = true
+	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
+	state = states.CASTING
+	
+	a2_cd = a2_cooldown * 0.5
+	casting_duration = a2_cast_time * 0.5
+	DataManager.Interface.set_ability_on_cooldown(2, a2_cd)
 
 func _on_MeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):

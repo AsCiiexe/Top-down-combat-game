@@ -9,23 +9,46 @@ onready var attackSprite = $AttackDirection/AttackPivot/AttackSprite
 enum states{IDLE, CHASE, MELEE}
 var state = states.IDLE
 
+########## - MOVEMENT - ##########
 var max_speed = 230
 var acceleration = 80 #the higher this is not only the faster it gets to max but the tighter it turns
 var movement = Vector2.ZERO
 var friction = 0.45 #the higher, the more slippery it will be
+##############################
 
+########## - DEFENSIVE STATS - ##########
 var max_health = 22
 var health = max_health setget set_health
+##############################
 
+########## - DETECTION - ##########
 var detection_range = 650
 var attack_range = 60
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
+##############################
 
+########## - OFFENSIVE STATS - ##########
 var damage = 2
 var attack_speed = 1 #how frequently this enemy attacks
-var attack_cd = 0 
+var attack_cd = 0
+##############################
 
+########## - MODIFIERS - ##########
+#hard mods
+var stunned = false #this entity can't do anything while stunned
+var silenced = false #this entity can't cast spells while silenced
+var disarmed = false #this entity can't do basic attacks while disarmed
+var rooted = false #this entity can't move or use movement spells while rooted
+
+#stat mods
+var cooldown_reduction = 0
+var speed_mod = 0
+var dmg_mod = 0
+
+#stat multipliers
+var att_speed_mult = 1
+##############################
 
 func _physics_process(delta):
 	attack_cd -= delta
@@ -41,8 +64,11 @@ func _physics_process(delta):
 				state = states.CHASE
 		
 		states.CHASE:
-			movement += position.direction_to(player_global_pos) * acceleration
-			movement = movement.clamped(max_speed)
+			if not stunned and not rooted:
+				movement += position.direction_to(player_global_pos) * acceleration
+				movement = movement.clamped(max_speed)
+			else:
+				movement *= friction
 			
 			if player_distance <= attack_range:
 				state = states.MELEE
@@ -51,9 +77,9 @@ func _physics_process(delta):
 		
 		states.MELEE:
 			movement *= friction
-			if attack_cd <= 0:
+			if attack_cd <= 0 and not stunned and not disarmed:
 				$AttackDirection.look_at(player_global_pos)
-				attack_cd = attack_speed
+				attack_cd = attack_speed * att_speed_mult
 				$AnimationPlayer.play("attack")
 			
 			if player_distance > attack_range * 1.15:
@@ -72,4 +98,4 @@ func set_health(value):
 
 func _on_AttackHitbox_area_entered(area):
 	if area.get_parent().is_in_group("player"):
-		area.get_parent().health -= damage
+		area.get_parent().health -= damage + dmg_mod

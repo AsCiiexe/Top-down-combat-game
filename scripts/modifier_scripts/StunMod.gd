@@ -7,7 +7,6 @@ func _ready():
 		get_parent().stunned = true
 	$DurationTimer.start(mod_duration)
 
-
 func _on_DurationTimer_timeout():
 	if get_parent().is_in_group("entity"):
 		get_parent().stunned = false

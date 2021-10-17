@@ -3,14 +3,19 @@ extends KinematicBody2D
 enum states{IDLE, CHASE, SHOOT, FLEE}
 var state = states.IDLE
 
+########## - MOVEMENT - ##########
 var acceleration = 50 #the higher this is not only the faster it gets to max but the tighter it turns
 var max_speed = 160
 var movement = Vector2.ZERO
 var friction = 0.88 #the higher, the more slippery it will be
+##############################
 
+########## - DEFENSIVE STATS - ##########
 var max_health = 16
 var health = max_health setget set_health
+##############################
 
+########## - DETECTION - ##########
 #when the player is at more than 70% distance, chase them
 #at 70% distance, aim at them
 #	if they get closer than 20% distance, flee from them
@@ -22,9 +27,28 @@ onready var rechase_distance = detection_range * 0.80
 onready var flee_distance = 160 #the other two may vary but this one is better if it's fixed
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
+##############################
 
+########## - OFFENSIVE STATS - ##########
 var attack_speed = 1.35
 var attack_cd = 0
+##############################
+
+########## - MODIFIERS - ##########
+#hard mods
+var stunned = false #this entity can't do anything while stunned
+var silenced = false #this entity can't cast spells while silenced
+var disarmed = false #this entity can't do basic attacks while disarmed
+var rooted = false #this entity can't move or use movement spells while rooted
+
+#stat mods
+var cooldown_reduction = 0
+var speed_mod = 0
+var dmg_mod = 0
+
+#stat multipliers
+var att_speed_mult = 1
+##############################
 
 func _physics_process(delta):
 	attack_cd -= delta
@@ -40,25 +64,30 @@ func _physics_process(delta):
 				state = states.CHASE
 		
 		states.CHASE:
-			movement += position.direction_to(player_global_pos) * acceleration
-			movement = movement.clamped(max_speed)
+			if not stunned and not rooted:
+				movement += position.direction_to(player_global_pos) * acceleration
+				movement = movement.clamped(max_speed + speed_mod)
+			else:
+				movement *= friction
 			
 			if player_distance <= shooting_distance:
-				attack_cd = attack_speed
+				attack_cd = attack_speed * att_speed_mult
 				state = states.SHOOT
 			elif player_distance > detection_range:
-				attack_cd = attack_speed
+				attack_cd = attack_speed * att_speed_mult
 				state = states.IDLE
 		
 		states.SHOOT:
 			update()
 			movement *= friction
-			if attack_cd <= 0:
+			
+			if attack_cd <= 0 and not stunned and not disarmed:
 				var bullet_instance = DataManager.SniperBullet.instance()
 				bullet_instance.position = global_position
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
+				bullet_instance.damage += dmg_mod
 				DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
-				attack_cd = attack_speed
+				attack_cd = attack_speed * att_speed_mult
 			
 			if player_distance <= flee_distance:
 				state = states.FLEE
@@ -66,16 +95,20 @@ func _physics_process(delta):
 				state = states.CHASE
 		
 		states.FLEE:
-			movement += position.direction_to(player_global_pos) * -acceleration
-			movement = movement.clamped(max_speed)
+			if not stunned and not rooted:
+				movement += position.direction_to(player_global_pos) * -acceleration
+				movement = movement.clamped(max_speed + speed_mod)
+			else:
+				movement *= friction
+			
 			if player_distance >= flee_distance * 1.12:#some 12% margin
-				attack_cd = attack_speed
+				attack_cd = attack_speed * att_speed_mult
 				state = states.SHOOT
 	
 	movement = move_and_slide(movement)
 
 func _draw():
-	if state == states.SHOOT:
+	if state == states.SHOOT and not stunned:
 		draw_line(Vector2(0, 0), player_global_pos - global_position, Color.red, 1.25)
 		draw_circle(player_global_pos - global_position, 2.0, Color.red)
 
