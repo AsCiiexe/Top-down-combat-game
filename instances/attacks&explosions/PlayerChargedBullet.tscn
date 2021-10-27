@@ -5,8 +5,7 @@
 [ext_resource path="res://scripts/instance_scripts/PlayerChargedBullet.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 10.2694
-height = 17.2633
+height = 17.6
 
 [node name="Area2D" type="Area2D"]
 input_pickable = false

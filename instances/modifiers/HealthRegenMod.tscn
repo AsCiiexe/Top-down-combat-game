@@ -4,6 +4,7 @@
 [ext_resource path="res://sprites/healing.png" type="Texture" id=2]
 
 [node name="HealthRegenMod" type="Node2D"]
+process_priority = 1
 script = ExtResource( 1 )
 
 [node name="DurationTimer" type="Timer" parent="."]
