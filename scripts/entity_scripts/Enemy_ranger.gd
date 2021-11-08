@@ -19,8 +19,12 @@ var health = max_health setget set_health
 var detection_range = 700
 var min_distance = 180
 var rechase_distance = 300
+
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
+
+var damaged_oor = false #when damaged out of range the enemy will chase the player
+var d_oor_distance = detection_range * 0.75 #how far it will chase the player before regular distance checks come back
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
@@ -36,12 +40,10 @@ var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
 #stat mods
-var cooldown_reduction = 0
+var cooldown_reduction = 1.0
+var att_speed_mod = 1.0
 var speed_mod = 0
 var dmg_mod = 0
-
-#stat multipliers
-var att_speed_mult = 1
 ##############################
 
 
@@ -67,12 +69,12 @@ func _physics_process(delta):
 			
 			if player_distance <= min_distance:
 				state = states.STAND
-			elif player_distance > detection_range:
+			elif player_distance > detection_range and damaged_oor == false:
 				state = states.IDLE
 			
 			#this enemy shoots while moving
 			if attack_cd <= 0 and not stunned and not disarmed:
-				attack_cd = attack_speed * att_speed_mult
+				attack_cd = attack_speed * att_speed_mod
 				var bullet_instance = DataManager.RangerBullet.instance()
 				bullet_instance.position = global_position
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
@@ -83,7 +85,7 @@ func _physics_process(delta):
 		states.STAND:
 			movement *= friction
 			if attack_cd <= 0 and not stunned and not disarmed:
-				attack_cd = attack_speed * att_speed_mult
+				attack_cd = attack_speed * att_speed_mod
 				var bullet_instance = DataManager.RangerBullet.instance()
 				bullet_instance.position = global_position
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
@@ -91,6 +93,10 @@ func _physics_process(delta):
 				DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
 			if player_distance >= rechase_distance:
 				state = states.CHASE
+	
+	if damaged_oor == true:
+		if player_distance < d_oor_distance:
+			damaged_oor = false
 	
 	movement = move_and_slide(movement)
 
@@ -102,3 +108,7 @@ func set_health(value):
 	
 	if health <= 0:
 		queue_free()
+	
+	if player_distance > detection_range:
+		damaged_oor = true
+		state = states.CHASE

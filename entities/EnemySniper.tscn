@@ -7,11 +7,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.4859, 15.4126 )
 
-[node name="EnemySniper" type="KinematicBody2D" groups=[
-"enemy",
-"enemy_ranger",
-"entity",
-]]
+[node name="EnemySniper" type="KinematicBody2D" groups=["enemy", "enemy_sniper", "entity"]]
 collision_layer = 10
 collision_mask = 3
 script = ExtResource( 1 )

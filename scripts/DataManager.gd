@@ -8,8 +8,19 @@ onready var RangerBullet = preload("res://instances/attacks&explosions/RangerBul
 onready var SniperBullet = preload("res://instances/attacks&explosions/SniperBullet.tscn")
 onready var Explosion = preload("res://instances/attacks&explosions/Explosion.tscn")
 
-onready var StunMod = preload("res://instances/modifiers/StunMod.tscn")
+
+
+#TODO: CONCENTRATE SOME OF THESE MODS INTO ONE NODE
+#THE BOOLEAN ONES CAN JUST BE ONE WITH A SWITCH CASE AND AN ENUM ON CREATION THAT SWAPS MOD SPRITE AND STAT
+#THE SAME GOES FOR THE QUANTITY ONES
+#ALSO CREATE PROGRESSIVE QUANTITY ONES WHICH'S PERCENTAGE GETS HIGHER OR LOWER THE LONGER IT GOES
 onready var HealthRegenMod = preload("res://instances/modifiers/HealthRegenMod.tscn")
+onready var HealthDegenMod = preload("res://instances/modifiers/HealthDegenMod.tscn")
+onready var StunMod = preload("res://instances/modifiers/StunMod.tscn")
+onready var RootMod = preload("res://instances/modifiers/RootMod.tscn")
+onready var SpeedMod = preload("res://instances/modifiers/SpeedMod.tscn")
+onready var SilenceMod = preload("res://instances/modifiers/SilenceMod.tscn")
+onready var DisarmMod = preload("res://instances/modifiers/DisarmMod.tscn")
 
 onready var Player = get_tree().get_root().get_node("World/Entities/Player")
 onready var BulletsNode = get_tree().get_root().get_node("World/Bullets")

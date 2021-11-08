@@ -20,12 +20,12 @@ func on_health_updated(health):
 	
 	if not updateTween.is_active():
 		updateTween.interpolate_property(healthbarUnder, "value", healthbarUnder.value, health,
-			0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT, 0.15)
+			0.33, Tween.TRANS_SINE, Tween.EASE_IN_OUT, 0.15)
 		updateTween.start()
 	else:
 		updateTween.stop(healthbarUnder, "value")
 		updateTween.interpolate_property(healthbarUnder, "value", healthbarUnder.value, health,
-			0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT, 0.15)
+			0.33, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 		updateTween.start()
 
 func on_max_health_updated(max_health):

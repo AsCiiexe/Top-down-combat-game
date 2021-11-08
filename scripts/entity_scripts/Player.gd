@@ -25,15 +25,16 @@ var health = max_health setget set_health
 var shooting_speed = 0.35
 var shooting_cd = 0
 var shooting_slow = 0.65 #while shooting the character moves slower for the duration of the shot cd
+var bullet_damage = 1.0
 
 #basic melee
-var melee_cooldown = 0.48 #how fast the player attacks
+var melee_cooldown = 0.38 #how fast the player attacks
 var melee_cd = 0 #current attack cd
 var combo_cd = 0 #the time in which if the player attacks again the combo will continue instead of starting again
-var melee_dmg = 2.5 #regular melee attack dmg
-var final_melee_dmg = 4 #final melee attack dmg
+var melee_dmg = 2 #regular melee attack dmg
+var final_melee_dmg = 3 #final melee attack dmg
 export var combo = 0 #current combo iteration, exported for the animation player to be able to continue the combo
-var melee_slow = 0.4 #how slow the player moves while doing a melee attack
+var melee_slow = 0.5 #how slow the player moves while doing a melee attack
 ##############################
 
 ########## - ABILITIES - ##########
@@ -45,23 +46,27 @@ var casting_duration = 0 #how long the slow lasts
 var a1_cooldown = 3.5
 var a1_cd = 0
 var a1_cast_time = 0.4
+var a1_damage = 6.0
 
 #ground explosion
 var a2_cooldown = 6.0
 var a2_cd = 0
 var a2_cast_time = 0.6
+var a2_damage = 8.0
+var a2_damage_variant = a2_damage * 0.5
 
 #nothing for now
 var a3_cooldown = 5.0
 var a3_cd = 0
+var a3_damage = 1.0
 
 #dash
 var dash_target = Vector2.ZERO #dash target in global coords
 var dash_direction = Vector2.ZERO #normalized dash_target direction in LOCAL coords
 var min_dash_distance = 100
-var max_dash_distance = 420
+var max_dash_distance = 480
 var dash_distance = 0
-var dash_speed = 1250
+var dash_speed = 1350
 var dash_cooldown = 1.85
 var dash_cd = 0
 ##############################
@@ -74,12 +79,10 @@ var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
 #stat mods
-var cooldown_reduction = 0
+var cooldown_reduction = 1.0 #CDR is always multiplicative (NOTE: still not implemented)
 var speed_mod = 0
 var dmg_mod = 0
-
-#stat multipliers
-var att_speed_mult = 1
+var att_speed_mod = 1.0
 ##############################
 
 
@@ -168,6 +171,7 @@ func get_input():
 		if dash_cd <= 0 and state == states.MOVING and not silenced and not rooted:
 			dash()
 			#cooldown is applied when the dash ends instead of when it starts
+			
 	
 	if Input.is_action_pressed("ability_1"):
 		if a1_cd <= 0 and state == states.MOVING and not silenced:
@@ -223,10 +227,11 @@ func fire_bullet():
 	var bullet_instance = DataManager.PlayerBullet.instance()
 	bullet_instance.position = global_position
 	bullet_instance.direction = global_position.direction_to(get_global_mouse_position())
+	bullet_instance.damage = bullet_damage
 	DataManager.ObstaclesNode.call_deferred("add_child", bullet_instance)
 	#if the bullet is a rigidbody use this instead vv
 	#bullet_instance.apply_impulse(Vector2(), Vector2(0,0).rotated(rotation))
-	shooting_cd = shooting_speed * att_speed_mult
+	shooting_cd = shooting_speed * att_speed_mod
 
 
 func melee_attack():
@@ -234,7 +239,7 @@ func melee_attack():
 		combo = 0
 	
 	if combo == 0:
-		melee_cd = (melee_cooldown * 0.85) * att_speed_mult
+		melee_cd = (melee_cooldown * 0.85) * att_speed_mod
 		#state = states.CASTING
 		combo_cd = 0.88
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -242,7 +247,7 @@ func melee_attack():
 		movement += movement_input * (acceleration * 10)
 		movement = movement.clamped(max_speed * 1.4)
 	elif combo == 1:
-		melee_cd = melee_cooldown * att_speed_mult
+		melee_cd = melee_cooldown * att_speed_mod
 		#state = states.CASTING
 		combo_cd = 1.08
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -250,7 +255,7 @@ func melee_attack():
 		movement += movement_input * (acceleration * 10)
 		movement = movement.clamped(max_speed * 1.4)
 	elif combo == 2:
-		melee_cd = (melee_cooldown * 1.35) * att_speed_mult
+		melee_cd = (melee_cooldown * 1.35) * att_speed_mod
 		#state = states.CASTING
 		combo_cd = 0
 		$MeleeDirection.look_at(get_global_mouse_position())
@@ -264,6 +269,7 @@ func ability_1():
 	charged_bullet_instance.position = global_position
 	charged_bullet_instance.direction = get_local_mouse_position().normalized()
 	charged_bullet_instance.look_at(get_global_mouse_position())
+	charged_bullet_instance.damage = a1_damage
 	DataManager.BulletsNode.call_deferred("add_child", charged_bullet_instance)
 	state = states.CASTING
 
@@ -271,6 +277,7 @@ func ability_1():
 func ability_2():
 	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
 	explosion_instance.position = get_global_mouse_position()
+	explosion_instance.damage = a2_damage
 	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
 	state = states.CASTING
 	
@@ -282,6 +289,7 @@ func ability_2_variant():
 	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
 	explosion_instance.position = get_global_mouse_position()
 	explosion_instance.flash_variant = true
+	explosion_instance.damage = a2_damage_variant
 	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
 	state = states.CASTING
 	

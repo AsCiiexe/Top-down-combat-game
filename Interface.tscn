@@ -12,7 +12,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Skillbar" type="ColorRect" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -75.0
@@ -22,7 +22,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability1" type="TextureRect" parent="ColorRect"]
+[node name="Ability1" type="TextureRect" parent="Skillbar"]
 self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 7.0
 margin_top = 7.16687
@@ -33,19 +33,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite2" type="Sprite" parent="ColorRect/Ability1"]
+[node name="Sprite2" type="Sprite" parent="Skillbar/Ability1"]
 position = Vector2( 28.17, 32.3743 )
 rotation = -0.600393
 scale = Vector2( 0.8, 0.2 )
 texture = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="ColorRect/Ability1"]
+[node name="Sprite" type="Sprite" parent="Skillbar/Ability1"]
 modulate = Color( 100, 100, 100, 1 )
 position = Vector2( 41.2039, 21.3914 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 1 )
 
-[node name="TextureProgress" type="TextureProgress" parent="ColorRect/Ability1"]
+[node name="TextureProgress" type="TextureProgress" parent="Skillbar/Ability1"]
 modulate = Color( 0, 64.53, 100, 0.06 )
 margin_right = 64.0
 margin_bottom = 64.0
@@ -57,7 +57,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability2" type="TextureRect" parent="ColorRect"]
+[node name="Ability2" type="TextureRect" parent="Skillbar"]
 self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 78.0336
 margin_top = 7.0
@@ -68,13 +68,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="ColorRect/Ability2"]
+[node name="Sprite" type="Sprite" parent="Skillbar/Ability2"]
 modulate = Color( 0.0862745, 0, 0.701961, 1 )
 position = Vector2( 31.5336, 31.3234 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 
-[node name="TextureProgress" type="TextureProgress" parent="ColorRect/Ability2"]
+[node name="TextureProgress" type="TextureProgress" parent="Skillbar/Ability2"]
 modulate = Color( 0, 64.53, 100, 0.06 )
 margin_right = 64.0
 margin_bottom = 64.0
@@ -86,7 +86,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dash" type="TextureRect" parent="ColorRect"]
+[node name="Dash" type="TextureRect" parent="Skillbar"]
 self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 341.0
 margin_top = 7.0
@@ -97,31 +97,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="ColorRect/Dash"]
+[node name="Sprite" type="Sprite" parent="Skillbar/Dash"]
 self_modulate = Color( 100, 100, 100, 1 )
 position = Vector2( 43.776, 31.9009 )
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 
-[node name="Sprite2" type="Sprite" parent="ColorRect/Dash"]
+[node name="Sprite2" type="Sprite" parent="Skillbar/Dash"]
 modulate = Color( 100, 100, 100, 1 )
 position = Vector2( 19.8162, 22.4717 )
 scale = Vector2( 0.287532, 0.05 )
 texture = ExtResource( 1 )
 
-[node name="Sprite3" type="Sprite" parent="ColorRect/Dash"]
+[node name="Sprite3" type="Sprite" parent="Skillbar/Dash"]
 modulate = Color( 100, 100, 100, 1 )
 position = Vector2( 16.9782, 32.21 )
 scale = Vector2( 0.382789, 0.05 )
 texture = ExtResource( 1 )
 
-[node name="Sprite4" type="Sprite" parent="ColorRect/Dash"]
+[node name="Sprite4" type="Sprite" parent="Skillbar/Dash"]
 modulate = Color( 100, 100, 100, 1 )
 position = Vector2( 20.1841, 41.5156 )
 scale = Vector2( 0.285889, 0.05 )
 texture = ExtResource( 1 )
 
-[node name="TextureProgress" type="TextureProgress" parent="ColorRect/Dash"]
+[node name="TextureProgress" type="TextureProgress" parent="Skillbar/Dash"]
 modulate = Color( 0, 64.53, 100, 0.06 )
 margin_right = 64.0
 margin_bottom = 64.0

@@ -19,10 +19,14 @@ var health = max_health setget set_health
 var detection_range = 650
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
+
+var damaged_oor = false #when damaged out of range the enemy will chase the player
+var d_oor_distance = detection_range * 0.75 #how far it will chase the player before regular distance checks come back
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
-var damage = 7
+var damage = 7.5
+var explosion_distance = 45.0 #how far the player has to be for this enemy to detonate
 ##############################
 
 ########## - MODIFIERS - ##########
@@ -33,12 +37,10 @@ var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
 #stat mods
-var cooldown_reduction = 0
+var cooldown_reduction = 1.0
+var att_speed_mod = 1.0
 var speed_mod = 0
 var dmg_mod = 0
-
-#stat multipliers
-var att_speed_mult = 1
 ##############################
 
 
@@ -46,6 +48,7 @@ func _physics_process(delta):
 	if DataManager.Player != null:
 		player_global_pos = DataManager.Player.global_position
 		player_distance = global_position.distance_to(player_global_pos)
+		print(player_distance)
 	
 	match state:
 		states.IDLE:
@@ -60,8 +63,14 @@ func _physics_process(delta):
 			else:
 				movement *= friction
 			
-			if player_distance > detection_range:
+			if player_distance > detection_range and damaged_oor == false:
 				state = states.IDLE
+			elif player_distance <= explosion_distance:
+				explode()
+	
+	if damaged_oor == true:
+		if player_distance < d_oor_distance:
+			damaged_oor = false
 	
 	movement = move_and_slide(movement)
 
@@ -74,12 +83,16 @@ func set_health(value):
 	
 	if health <= 0:
 		queue_free()
+	
+	if player_distance > detection_range:
+		damaged_oor = true
+		state = states.CHASE
 
 
-func _on_DamageArea_area_entered(area):
-	if area.get_parent().is_in_group("player") and not stunned and not silenced:
-		area.get_parent().health -= damage + dmg_mod
-		var explode = DataManager.Explosion.instance()
-		explode.position = global_position
-		get_tree().get_root().call_deferred("add_child", explode)
+func explode():
+	if not stunned and not silenced:
+		DataManager.Player.health -= damage + dmg_mod
+		var explosion = DataManager.Explosion.instance()
+		explosion.position = global_position
+		get_tree().get_root().call_deferred("add_child", explosion)
 		queue_free()

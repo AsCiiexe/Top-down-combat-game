@@ -25,8 +25,11 @@ var detection_range = 1000
 onready var shooting_distance = detection_range * 0.70
 onready var rechase_distance = detection_range * 0.80
 onready var flee_distance = 160 #the other two may vary but this one is better if it's fixed
+
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
+
+var damaged_oor = false #when damaged out of range the enemy will chase the player
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
@@ -38,16 +41,14 @@ var attack_cd = 0
 #hard mods
 var stunned = false #this entity can't do anything while stunned
 var silenced = false #this entity can't cast spells while silenced
-var disarmed = false #this entity can't do basic attacks while disarmed
+var disarmed = false setget set_disarmed #disarming this enemy is a special case
 var rooted = false #this entity can't move or use movement spells while rooted
 
 #stat mods
-var cooldown_reduction = 0
+var cooldown_reduction = 1.0
+var att_speed_mod = 1.0
 var speed_mod = 0
 var dmg_mod = 0
-
-#stat multipliers
-var att_speed_mult = 1
 ##############################
 
 func _physics_process(delta):
@@ -71,10 +72,10 @@ func _physics_process(delta):
 				movement *= friction
 			
 			if player_distance <= shooting_distance:
-				attack_cd = attack_speed * att_speed_mult
+				attack_cd = attack_speed * att_speed_mod
 				state = states.SHOOT
-			elif player_distance > detection_range:
-				attack_cd = attack_speed * att_speed_mult
+			elif player_distance > detection_range and damaged_oor == false:
+				attack_cd = attack_speed * att_speed_mod
 				state = states.IDLE
 		
 		states.SHOOT:
@@ -87,7 +88,7 @@ func _physics_process(delta):
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
 				bullet_instance.damage += dmg_mod
 				DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
-				attack_cd = attack_speed * att_speed_mult
+				attack_cd = attack_speed * att_speed_mod
 			
 			if player_distance <= flee_distance:
 				state = states.FLEE
@@ -102,15 +103,23 @@ func _physics_process(delta):
 				movement *= friction
 			
 			if player_distance >= flee_distance * 1.12:#some 12% margin
-				attack_cd = attack_speed * att_speed_mult
+				attack_cd = attack_speed * att_speed_mod
 				state = states.SHOOT
+	
+	if damaged_oor == true:
+		if state == states.SHOOT:
+			damaged_oor = false
 	
 	movement = move_and_slide(movement)
 
 func _draw():
 	if state == states.SHOOT and not stunned:
-		draw_line(Vector2(0, 0), player_global_pos - global_position, Color.red, 1.25)
-		draw_circle(player_global_pos - global_position, 2.0, Color.red)
+		if not disarmed:
+			draw_line(Vector2(0, 0), player_global_pos - global_position, Color.red, 1.25)
+			draw_circle(player_global_pos - global_position, 2.0, Color.red)
+		else:
+			draw_line(Vector2(0, 0), player_global_pos - global_position, Color.white, 1.25)
+			draw_circle(player_global_pos - global_position, 2.0, Color.white)
 
 
 func set_health(value):
@@ -119,3 +128,14 @@ func set_health(value):
 	
 	if health <= 0:
 		queue_free()
+	
+	if player_distance > detection_range:
+		damaged_oor = true
+		state = states.CHASE
+
+func set_disarmed(value : bool):
+	disarmed = value
+	if disarmed == false:
+		attack_cd = attack_speed
+
+

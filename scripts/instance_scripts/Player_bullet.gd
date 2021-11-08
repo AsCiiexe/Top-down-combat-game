@@ -4,7 +4,7 @@ var speed = 1250
 var direction = Vector2.ZERO
 var lifespan = 2.5
 var count = 0
-var damage = 1
+var damage = 1.0
 
 func _physics_process(delta):
 	var movement = direction * speed * delta
@@ -23,6 +23,9 @@ func colliding():
 	var collided_node = $RayCast2D.get_collider()
 	if collided_node.is_in_group("enemy"):
 		collided_node.health -= damage
+		if collided_node.silenced == false:
+			var mod = DataManager.SilenceMod.instance()
+			collided_node.add_child(mod)
 		queue_free()
 	elif collided_node.is_in_group("obstacle"):
 		queue_free()

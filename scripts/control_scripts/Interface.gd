@@ -1,8 +1,8 @@
 extends Control
 
-onready var dash_cd_bar = $ColorRect/Dash/TextureProgress
-onready var ability1_cd_bar = $ColorRect/Ability1/TextureProgress
-onready var ability2_cd_bar = $ColorRect/Ability2/TextureProgress
+onready var dash_cd_bar = $Skillbar/Dash/TextureProgress
+onready var ability1_cd_bar = $Skillbar/Ability1/TextureProgress
+onready var ability2_cd_bar = $Skillbar/Ability2/TextureProgress
 
 func _ready():
 	DataManager.reset_addresses()

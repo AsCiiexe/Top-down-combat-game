@@ -116,9 +116,9 @@ tracks/3/keys = {
 }
 
 [node name="PlayerExplosion" type="Area2D"]
-monitorable = false
 collision_layer = 0
 collision_mask = 8
+monitorable = false
 script = ExtResource( 2 )
 
 [node name="BelowSprite" type="Sprite" parent="."]

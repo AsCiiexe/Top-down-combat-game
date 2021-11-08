@@ -9,8 +9,8 @@
 extents = Vector2( 15.7132, 15.6518 )
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 13.4778
-height = 35.6333
+radius = 14.0
+height = 35.0
 
 [sub_resource type="Animation" id=3]
 resource_name = "attack"
@@ -53,11 +53,7 @@ tracks/2/keys = {
 "values": [ false, true ]
 }
 
-[node name="EnemyMelee" type="KinematicBody2D" groups=[
-"enemy",
-"enemy_melee",
-"entity",
-]]
+[node name="EnemyMelee" type="KinematicBody2D" groups=["enemy", "enemy_melee", "entity"]]
 collision_layer = 10
 collision_mask = 3
 script = ExtResource( 1 )
@@ -79,16 +75,16 @@ rotation = 0.523599
 [node name="AttackSprite" type="Sprite" parent="AttackDirection/AttackPivot"]
 visible = false
 modulate = Color( 1, 0.576471, 0.239216, 1 )
-position = Vector2( 45, 0 )
+position = Vector2( 54, 0 )
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 3 )
 
 [node name="AttackHitbox" type="Area2D" parent="AttackDirection"]
-position = Vector2( 45, 0 )
-input_pickable = false
-monitorable = false
+position = Vector2( 50, 0 )
 collision_layer = 0
 collision_mask = 4
+input_pickable = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDirection/AttackHitbox"]
 visible = false
