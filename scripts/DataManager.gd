@@ -8,19 +8,16 @@ onready var RangerBullet = preload("res://instances/attacks&explosions/RangerBul
 onready var SniperBullet = preload("res://instances/attacks&explosions/SniperBullet.tscn")
 onready var Explosion = preload("res://instances/attacks&explosions/Explosion.tscn")
 
-
-
-#TODO: CONCENTRATE SOME OF THESE MODS INTO ONE NODE
-#THE BOOLEAN ONES CAN JUST BE ONE WITH A SWITCH CASE AND AN ENUM ON CREATION THAT SWAPS MOD SPRITE AND STAT
-#THE SAME GOES FOR THE QUANTITY ONES
-#ALSO CREATE PROGRESSIVE QUANTITY ONES WHICH'S PERCENTAGE GETS HIGHER OR LOWER THE LONGER IT GOES
-onready var HealthRegenMod = preload("res://instances/modifiers/HealthRegenMod.tscn")
-onready var HealthDegenMod = preload("res://instances/modifiers/HealthDegenMod.tscn")
-onready var StunMod = preload("res://instances/modifiers/StunMod.tscn")
-onready var RootMod = preload("res://instances/modifiers/RootMod.tscn")
 onready var SpeedMod = preload("res://instances/modifiers/SpeedMod.tscn")
-onready var SilenceMod = preload("res://instances/modifiers/SilenceMod.tscn")
-onready var DisarmMod = preload("res://instances/modifiers/DisarmMod.tscn")
+onready var BoolMod = preload("res://instances/modifiers/BoolMod.tscn")
+onready var TickingMod = preload("res://instances/modifiers/TickingMod.tscn")
+
+onready var HealingSpr = preload("res://sprites/modifier_icons/healing.png")
+onready var DropSpr = preload("res://sprites/modifier_icons/drop.png")
+onready var SwirlSpr = preload("res://sprites/modifier_icons/stun.png")
+onready var ChainSpr = preload("res://sprites/modifier_icons/root.png")
+onready var HasteSpr = preload("res://sprites/modifier_icons/haste.png")
+onready var SlowSpr = preload("res://sprites/modifier_icons/slow.png")
 
 onready var Player = get_tree().get_root().get_node("World/Entities/Player")
 onready var BulletsNode = get_tree().get_root().get_node("World/Bullets")

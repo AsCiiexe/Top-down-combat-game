@@ -4,14 +4,17 @@ enum states {IDLE, CHASE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var acceleration = 175 #the higher this is not only the faster it gets to max but the tighter the turns it takes are
-var max_speed = 280
+var base_speed = 280
+var speed = base_speed
+var base_acceleration = 175
+var acceleration = base_acceleration #the higher, the tighter it turns around
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var max_health = 12
+var base_max_health = 12
+var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
 
@@ -25,22 +28,20 @@ var d_oor_distance = detection_range * 0.75 #how far it will chase the player be
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
-var damage = 7.5
+var attack_damage = 7.5
 var explosion_distance = 45.0 #how far the player has to be for this enemy to detonate
 ##############################
 
 ########## - MODIFIERS - ##########
+var mod_dict = {}
 #hard mods
 var stunned = false #this entity can't do anything while stunned
 var silenced = false #this entity can't cast spells while silenced
 var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
-#stat mods
 var cooldown_reduction = 1.0
 var att_speed_mod = 1.0
-var speed_mod = 0
-var dmg_mod = 0
 ##############################
 
 
@@ -48,7 +49,6 @@ func _physics_process(delta):
 	if DataManager.Player != null:
 		player_global_pos = DataManager.Player.global_position
 		player_distance = global_position.distance_to(player_global_pos)
-		print(player_distance)
 	
 	match state:
 		states.IDLE:
@@ -59,7 +59,7 @@ func _physics_process(delta):
 		states.CHASE:
 			if not stunned and not rooted:
 				movement += position.direction_to(player_global_pos) * acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 			else:
 				movement *= friction
 			
@@ -91,8 +91,9 @@ func set_health(value):
 
 func explode():
 	if not stunned and not silenced:
-		DataManager.Player.health -= damage + dmg_mod
+		DataManager.Player.health -= attack_damage
 		var explosion = DataManager.Explosion.instance()
 		explosion.position = global_position
 		get_tree().get_root().call_deferred("add_child", explosion)
+		
 		queue_free()

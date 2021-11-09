@@ -15,6 +15,11 @@ func _on_PlayerExplosion_body_entered(body):
 			body.health -= damage
 		else:
 			body.health -= damage
-			var stun_mod = DataManager.StunMod.instance()
-			stun_mod.mod_duration = 2.0
-			body.call_deferred("add_child", stun_mod)
+			
+			var stun_mod = body.mod_dict.get("flash_stun")
+			if stun_mod == null:
+				stun_mod = DataManager.BoolMod.instance()
+				stun_mod.mod_type = stun_mod.mod.STUN
+				stun_mod.mod_duration = 2.0
+				stun_mod.mod_name = "flash_stun"
+				body.call_deferred("add_child", stun_mod)

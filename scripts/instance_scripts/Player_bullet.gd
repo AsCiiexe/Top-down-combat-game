@@ -23,9 +23,6 @@ func colliding():
 	var collided_node = $RayCast2D.get_collider()
 	if collided_node.is_in_group("enemy"):
 		collided_node.health -= damage
-		if collided_node.silenced == false:
-			var mod = DataManager.SilenceMod.instance()
-			collided_node.add_child(mod)
 		queue_free()
 	elif collided_node.is_in_group("obstacle"):
 		queue_free()

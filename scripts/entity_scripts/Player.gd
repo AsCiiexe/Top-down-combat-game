@@ -8,17 +8,20 @@ enum states{MOVING, CASTING, DASHING}
 var state = states.MOVING
 
 ########## - MOVEMENT - ##########
-var acceleration = 125
-var max_speed = 320
+var base_speed = 320
+var speed = base_speed
+var base_acceleration = 125 #the higher, the tighter it turns around
+var acceleration = base_acceleration
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
 var movement_input = Vector2.ZERO
-##############################
+##################################
 
 ########## - DEFENSIVE STATS - ##########
-var max_health = 20
+var base_max_health = 20
+var max_health = base_max_health
 var health = max_health setget set_health
-######################################
+#########################################
 
 ########## - BASIC ATTACKS - ##########
 #basic shooting
@@ -31,11 +34,10 @@ var bullet_damage = 1.0
 var melee_cooldown = 0.38 #how fast the player attacks
 var melee_cd = 0 #current attack cd
 var combo_cd = 0 #the time in which if the player attacks again the combo will continue instead of starting again
-var melee_dmg = 2 #regular melee attack dmg
-var final_melee_dmg = 3 #final melee attack dmg
+var melee_dmg = 2.0 #regular melee attack dmg
 export var combo = 0 #current combo iteration, exported for the animation player to be able to continue the combo
 var melee_slow = 0.5 #how slow the player moves while doing a melee attack
-##############################
+######################################
 
 ########## - ABILITIES - ##########
 var casting_cd = 0
@@ -53,7 +55,7 @@ var a2_cooldown = 6.0
 var a2_cd = 0
 var a2_cast_time = 0.6
 var a2_damage = 8.0
-var a2_damage_variant = a2_damage * 0.5
+var a2_damage_variant = a2_damage * 0.45
 
 #nothing for now
 var a3_cooldown = 5.0
@@ -69,34 +71,31 @@ var dash_distance = 0
 var dash_speed = 1350
 var dash_cooldown = 1.85
 var dash_cd = 0
-##############################
+###################################
 
 ########## - MODIFIERS - ##########
+var mod_dict = {}
 #hard mods
 var stunned = false #this entity can't do anything while stunned
 var silenced = false #this entity can't cast spells while silenced
 var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
-#stat mods
 var cooldown_reduction = 1.0 #CDR is always multiplicative (NOTE: still not implemented)
-var speed_mod = 0
-var dmg_mod = 0
-var att_speed_mod = 1.0
-##############################
+var att_speed_mod = 1.0 #Same as cdr but for basic attacks, it applies equally and to both melee and ranged
+###################################
 
 
 func _physics_process(delta):
 	refresh_cooldowns(delta)
 	get_input()
-	
 	match state:
 		states.MOVING:
 			if rooted:
 				movement = Vector2.ZERO
 			else:
 				movement += movement_input * acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 				if movement_input == Vector2.ZERO:
 					movement *= friction
 				elif melee_cd > 0.1:
@@ -109,7 +108,7 @@ func _physics_process(delta):
 				movement = Vector2.ZERO
 			else:
 				movement += movement_input * acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 				if movement_input == Vector2.ZERO:
 					movement *= friction
 				else:
@@ -245,7 +244,7 @@ func melee_attack():
 		$MeleeDirection.look_at(get_global_mouse_position())
 		$MeleeAttackAnimator.play("melee combo 1")#animationplayer can only play one animation at a time
 		movement += movement_input * (acceleration * 10)
-		movement = movement.clamped(max_speed * 1.4)
+		movement = movement.clamped(base_speed * 1.4)
 	elif combo == 1:
 		melee_cd = melee_cooldown * att_speed_mod
 		#state = states.CASTING
@@ -253,7 +252,7 @@ func melee_attack():
 		$MeleeDirection.look_at(get_global_mouse_position())
 		$MeleeAttackAnimator.play("melee combo 2")#animationplayer can only play one animation at a time
 		movement += movement_input * (acceleration * 10)
-		movement = movement.clamped(max_speed * 1.4)
+		movement = movement.clamped(base_speed * 1.4)
 	elif combo == 2:
 		melee_cd = (melee_cooldown * 1.35) * att_speed_mod
 		#state = states.CASTING
@@ -261,7 +260,7 @@ func melee_attack():
 		$MeleeDirection.look_at(get_global_mouse_position())
 		$MeleeAttackAnimator.play("melee combo 3")#animationplayer can only play one animation at a time
 		movement += movement_input * (acceleration * 25)
-		movement = movement.clamped(max_speed * 2.5)
+		movement = movement.clamped(base_speed * 2.5)
 
 
 func ability_1():
@@ -303,4 +302,4 @@ func _on_MeleeHitbox_body_entered(body):
 
 func _on_CircularMeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):
-		body.health -= final_melee_dmg
+		body.health -= melee_dmg * 1.25

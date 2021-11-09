@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/stun.png-a939ae020772962a81a7eb2ff40bb721.stex"
+path="res://.import/healing.png-2917c375e860846ca15323279d0bb59f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/stun.png"
-dest_files=[ "res://.import/stun.png-a939ae020772962a81a7eb2ff40bb721.stex" ]
+source_file="res://sprites/modifier_icons/healing.png"
+dest_files=[ "res://.import/healing.png-2917c375e860846ca15323279d0bb59f.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

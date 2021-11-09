@@ -63,16 +63,16 @@ __meta__ = {
 position = Vector2( 530.29, 317.526 )
 
 [node name="EnemyExplosive" parent="Entities" instance=ExtResource( 2 )]
-position = Vector2( 1839.61, 1038.98 )
+position = Vector2( 1768.82, 919.348 )
 
 [node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -172.499, 1062.76 )
+position = Vector2( -206.787, 1040.29 )
 
 [node name="EnemyRanger" parent="Entities" instance=ExtResource( 4 )]
-position = Vector2( 1838.71, 29.6613 )
+position = Vector2( 1790, 93 )
 
 [node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -537.941, 10.6411 )
+position = Vector2( -545, -11 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false

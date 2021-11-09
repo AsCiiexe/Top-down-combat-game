@@ -10,14 +10,17 @@ enum states{IDLE, CHASE, MELEE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var max_speed = 230
-var acceleration = 80 #the higher this is not only the faster it gets to max but the tighter it turns
+var base_speed = 230
+var speed = base_speed
+var base_acceleration = 80 #the higher, the tighter it turns around
+var acceleration = base_acceleration
 var movement = Vector2.ZERO
 var friction = 0.45 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var max_health = 22
+var base_max_health = 22
+var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
 
@@ -32,23 +35,21 @@ var d_oor_distance = detection_range * 0.75 #how far it will chase the player be
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
-var damage = 2
+var attack_damage = 2
 var attack_speed = 1 #how frequently this enemy attacks
 var attack_cd = 0
 ##############################
 
 ########## - MODIFIERS - ##########
+var mod_dict = {}
 #hard mods
 var stunned = false #this entity can't do anything while stunned
 var silenced = false #this entity can't cast spells while silenced
 var disarmed = false #this entity can't do basic attacks while disarmed
 var rooted = false #this entity can't move or use movement spells while rooted
 
-#stat mods
 var cooldown_reduction = 1.0
 var att_speed_mod = 1.0
-var speed_mod = 0
-var dmg_mod = 0
 ##############################
 
 func _physics_process(delta):
@@ -67,7 +68,7 @@ func _physics_process(delta):
 		states.CHASE:
 			if not stunned and not rooted:
 				movement += position.direction_to(player_global_pos) * acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 			else:
 				movement *= friction
 			
@@ -107,4 +108,4 @@ func set_health(value):
 
 func _on_AttackHitbox_area_entered(area):
 	if area.get_parent().is_in_group("player"):
-		area.get_parent().health -= damage + dmg_mod
+		area.get_parent().health -= attack_damage

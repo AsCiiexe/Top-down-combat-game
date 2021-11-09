@@ -11,7 +11,7 @@ var mod_quantity = 0 #this is the total amount of speed that will be added (and 
 
 func _ready():
 	if get_parent().is_in_group("entity"):
-		mod_quantity = (get_parent().max_speed + get_parent().speed_mod) * speed_mod
+		mod_quantity = (get_parent().speed + get_parent().speed_mod) * speed_mod
 		get_parent().speed_mod += mod_quantity
 	$DurationTimer.start(mod_duration)
 

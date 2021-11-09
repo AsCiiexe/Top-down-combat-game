@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/healing.png-68affea8ed0d76702ae9d9028f7f473c.stex"
+path="res://.import/slow.png-367f23ca03124b8430ec4f34c8c0d527.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/healing.png"
-dest_files=[ "res://.import/healing.png-68affea8ed0d76702ae9d9028f7f473c.stex" ]
+source_file="res://sprites/modifier_icons/slow.png"
+dest_files=[ "res://.import/slow.png-367f23ca03124b8430ec4f34c8c0d527.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

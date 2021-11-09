@@ -4,14 +4,17 @@ enum states{IDLE, CHASE, SHOOT, FLEE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var acceleration = 50 #the higher this is not only the faster it gets to max but the tighter it turns
-var max_speed = 160
+var base_speed = 160
+var speed = base_speed
+var base_acceleration = 50
+var acceleration = base_acceleration #the higher, the tighter it turns around
 var movement = Vector2.ZERO
 var friction = 0.88 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var max_health = 16
+var base_max_health = 16
+var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
 
@@ -35,20 +38,19 @@ var damaged_oor = false #when damaged out of range the enemy will chase the play
 ########## - OFFENSIVE STATS - ##########
 var attack_speed = 1.35
 var attack_cd = 0
+var attack_damage = 5
 ##############################
 
 ########## - MODIFIERS - ##########
+var mod_dict = {}
 #hard mods
-var stunned = false #this entity can't do anything while stunned
-var silenced = false #this entity can't cast spells while silenced
-var disarmed = false setget set_disarmed #disarming this enemy is a special case
-var rooted = false #this entity can't move or use movement spells while rooted
+var stunned = false setget set_stunned
+var silenced = false
+var disarmed = false setget set_disarmed
+var rooted = false
 
-#stat mods
 var cooldown_reduction = 1.0
 var att_speed_mod = 1.0
-var speed_mod = 0
-var dmg_mod = 0
 ##############################
 
 func _physics_process(delta):
@@ -67,7 +69,7 @@ func _physics_process(delta):
 		states.CHASE:
 			if not stunned and not rooted:
 				movement += position.direction_to(player_global_pos) * acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 			else:
 				movement *= friction
 			
@@ -86,7 +88,7 @@ func _physics_process(delta):
 				var bullet_instance = DataManager.SniperBullet.instance()
 				bullet_instance.position = global_position
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
-				bullet_instance.damage += dmg_mod
+				bullet_instance.damage = attack_damage
 				DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
 				attack_cd = attack_speed * att_speed_mod
 			
@@ -98,7 +100,7 @@ func _physics_process(delta):
 		states.FLEE:
 			if not stunned and not rooted:
 				movement += position.direction_to(player_global_pos) * -acceleration
-				movement = movement.clamped(max_speed + speed_mod)
+				movement = movement.clamped(speed)
 			else:
 				movement *= friction
 			
@@ -138,4 +140,8 @@ func set_disarmed(value : bool):
 	if disarmed == false:
 		attack_cd = attack_speed
 
+func set_stunned(value : bool):
+	stunned = value
+	if stunned == false:
+		attack_cd = attack_speed
 

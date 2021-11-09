@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/slow.png-097a5dbf62ab045f77683b3418cb4f0e.stex"
+path="res://.import/haste.png-dde413e8d349555797a3be837af7d543.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/slow.png"
-dest_files=[ "res://.import/slow.png-097a5dbf62ab045f77683b3418cb4f0e.stex" ]
+source_file="res://sprites/modifier_icons/haste.png"
+dest_files=[ "res://.import/haste.png-dde413e8d349555797a3be837af7d543.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
