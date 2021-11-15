@@ -14,24 +14,25 @@ extends Node2D
 #####################################################
 
 var mod_name = "NO_NAME_BOOL_MOD"
-enum mod {STUN, ROOT, SILENCE, DISARM, UNASSIGNED}
-var mod_type = mod.UNASSIGNED
+enum variable_stats {STUN, ROOT, SILENCE, DISARM, UNASSIGNED}
+var mod_type = variable_stats.UNASSIGNED
 var mod_duration = 1.0
 
 
 func _ready():
 	if get_parent().is_in_group("entity"):
 		get_parent().mod_dict[mod_name] = self.get_path()
+		
 		match mod_type:
-			mod.STUN:
+			variable_stats.STUN:
 				get_parent().stunned = true
-			mod.ROOT:
+			variable_stats.ROOT:
 				get_parent().rooted = true
-			mod.SILENCE:
+			variable_stats.SILENCE:
 				get_parent().silenced = true
-			mod.DISARM:
+			variable_stats.DISARM:
 				get_parent().disarmed = true
-			mod.UNASSIGNED:
+			variable_stats.UNASSIGNED:
 				print("UNASSIGNED MOD TYPE")
 				queue_free()
 	
@@ -46,13 +47,13 @@ func refresh_modifier():
 func _on_DurationTimer_timeout():
 	if get_parent().is_in_group("entity"):
 		match mod_type:
-			mod.STUN:
+			variable_stats.STUN:
 				get_parent().stunned = false
-			mod.ROOT:
+			variable_stats.ROOT:
 				get_parent().rooted = false
-			mod.SILENCE:
+			variable_stats.SILENCE:
 				get_parent().silenced = false
-			mod.DISARM:
+			variable_stats.DISARM:
 				get_parent().disarmed = false
 		
 		get_parent().mod_dict.erase(mod_name)

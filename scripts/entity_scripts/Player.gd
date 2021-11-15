@@ -68,7 +68,7 @@ var dash_direction = Vector2.ZERO #normalized dash_target direction in LOCAL coo
 var min_dash_distance = 100
 var max_dash_distance = 480
 var dash_distance = 0
-var dash_speed = 1350
+var dash_speed = 1430
 var dash_cooldown = 1.85
 var dash_cd = 0
 ###################################
@@ -170,7 +170,6 @@ func get_input():
 		if dash_cd <= 0 and state == states.MOVING and not silenced and not rooted:
 			dash()
 			#cooldown is applied when the dash ends instead of when it starts
-			
 	
 	if Input.is_action_pressed("ability_1"):
 		if a1_cd <= 0 and state == states.MOVING and not silenced:

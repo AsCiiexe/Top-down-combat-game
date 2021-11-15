@@ -8,8 +8,8 @@ onready var RangerBullet = preload("res://instances/attacks&explosions/RangerBul
 onready var SniperBullet = preload("res://instances/attacks&explosions/SniperBullet.tscn")
 onready var Explosion = preload("res://instances/attacks&explosions/Explosion.tscn")
 
-onready var SpeedMod = preload("res://instances/modifiers/SpeedMod.tscn")
 onready var BoolMod = preload("res://instances/modifiers/BoolMod.tscn")
+onready var SimpleMod = preload("res://instances/modifiers/SimpleMod.tscn")
 onready var TickingMod = preload("res://instances/modifiers/TickingMod.tscn")
 
 onready var HealingSpr = preload("res://sprites/modifier_icons/healing.png")
