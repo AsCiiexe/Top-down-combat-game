@@ -7,10 +7,10 @@ extends Node2D
 #var modifier = collided_node.mod_dict.get(>mod name<) #if has the mod it returns its path(key), else it returns null
 #if modifier == null:
 #	modifier = DataManager.BoolMod.instance() #if it doesn't have it, reuse this variable for managing the new mod
-#	modifier.mod_type = modifier.mod.SILENCE
-#	collided_node.call_deferred("add_child", modifier)
+#	modifier.mod_type = modifier.variable_stats.SILENCE
+#	collided_node.add_child(modifier)
 #else:
-#	get_node(mod).refresh_modifier() #if it does have the mod simply refresh its effect
+#	get_node(>mod name<).refresh_modifier() #if it does have the mod simply refresh its effect
 #####################################################
 
 var mod_name = "NO_NAME_BOOL_MOD"
@@ -33,7 +33,7 @@ func _ready():
 			variable_stats.DISARM:
 				get_parent().disarmed = true
 			variable_stats.UNASSIGNED:
-				print("UNASSIGNED MOD TYPE")
+				print("UNASSIGNED BOOLEAN MOD TYPE")
 				queue_free()
 	
 	$DurationTimer.start(mod_duration)

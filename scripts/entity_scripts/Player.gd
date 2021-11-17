@@ -8,9 +8,9 @@ enum states{MOVING, CASTING, DASHING}
 var state = states.MOVING
 
 ########## - MOVEMENT - ##########
-var base_speed = 320
+var base_speed = 320.0
 var speed = base_speed
-var base_acceleration = 125 #the higher, the tighter it turns around
+var base_acceleration = 125.0 #the higher, the tighter it turns around
 var acceleration = base_acceleration
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
@@ -18,59 +18,69 @@ var movement_input = Vector2.ZERO
 ##################################
 
 ########## - DEFENSIVE STATS - ##########
-var base_max_health = 20
+var base_max_health = 200.0
 var max_health = base_max_health
 var health = max_health setget set_health
 #########################################
 
+var base_attack_damage = 10.0
+var attack_damage = base_attack_damage
+
 ########## - BASIC ATTACKS - ##########
 #basic shooting
 var shooting_speed = 0.35
-var shooting_cd = 0
+var shooting_cd = 0.0
 var shooting_slow = 0.65 #while shooting the character moves slower for the duration of the shot cd
 var bullet_damage = 1.0
 
 #basic melee
 var melee_cooldown = 0.38 #how fast the player attacks
-var melee_cd = 0 #current attack cd
-var combo_cd = 0 #the time in which if the player attacks again the combo will continue instead of starting again
-var melee_dmg = 2.0 #regular melee attack dmg
-export var combo = 0 #current combo iteration, exported for the animation player to be able to continue the combo
+var melee_cd = 0.0 #current attack cd
+var combo_cd = 0.0 #the time in which if the player attacks again the combo will continue instead of starting again
+var melee_damage = 2.0 #regular melee attack dmg
+export var combo = 0.0 #current combo iteration, exported for the animation player to be able to continue the combo
 var melee_slow = 0.5 #how slow the player moves while doing a melee attack
 ######################################
 
 ########## - ABILITIES - ##########
-var casting_cd = 0
+var casting_cd = 0.0
 var casting_slow = 0.45 #how much the player gets slowed when casting and ability
-var casting_duration = 0 #how long the slow lasts
+var casting_duration = 0.0 #how long the slow lasts
 
 #charged shot
 var a1_cooldown = 3.5
-var a1_cd = 0
+var a1_cd = 0.0
 var a1_cast_time = 0.4
 var a1_damage = 6.0
 
-#ground explosion
+#remote explosion
 var a2_cooldown = 6.0
-var a2_cd = 0
+var a2_cd = 0.0
 var a2_cast_time = 0.6
-var a2_damage = 8.0
+var a2_damage =  8.0
 var a2_damage_variant = a2_damage * 0.45
 
-#nothing for now
-var a3_cooldown = 5.0
-var a3_cd = 0
-var a3_damage = 1.0
+#close blast
+var a3_cooldown = 3.5
+var a3_cd = 0.0
+var a3_cast_time = 0.25
+var a3_damage =  6.0
+
+#strike barrage
+var a4_cooldown = 6.0
+var a4_cd = 0.0
+var a4_cast_time = 1.0
+var a4_damage = 1.6
 
 #dash
 var dash_target = Vector2.ZERO #dash target in global coords
 var dash_direction = Vector2.ZERO #normalized dash_target direction in LOCAL coords
-var min_dash_distance = 100
-var max_dash_distance = 480
-var dash_distance = 0
-var dash_speed = 1430
+var min_dash_distance = 100.0
+var max_dash_distance = 480.0
+var dash_distance = 0.0
+var dash_speed = 1430.0
 var dash_cooldown = 1.85
-var dash_cd = 0
+var dash_cd = 0.0
 ###################################
 
 ########## - MODIFIERS - ##########
@@ -130,6 +140,7 @@ func _physics_process(delta):
 	
 	movement = move_and_slide(movement)
 
+
 func refresh_cooldowns(delta):
 	shooting_cd -= delta
 	melee_cd -= delta
@@ -137,6 +148,8 @@ func refresh_cooldowns(delta):
 	dash_cd -= delta
 	a1_cd -= delta
 	a2_cd -= delta
+	a3_cd -= delta
+	a4_cd -= delta
 	casting_duration -= delta
 
 
@@ -154,7 +167,6 @@ func get_input():
 		movement_input.x -= 1
 	if Input.is_action_pressed("ui_right"):
 		movement_input.x += 1
-	
 	
 	#the player can either shoot, do a melee attack or cast a spell but not more than one at the same time
 	
@@ -174,26 +186,34 @@ func get_input():
 	if Input.is_action_pressed("ability_1"):
 		if a1_cd <= 0 and state == states.MOVING and not silenced:
 			ability_1()
-			a1_cd = a1_cooldown
-			casting_duration = a1_cast_time
-			DataManager.Interface.set_ability_on_cooldown(1, a1_cd)
 	
 	if Input.is_action_pressed("ability_2"):
 		if a2_cd <= 0 and state == states.MOVING and not silenced:
-			if Input.is_action_pressed("variant"):
+			if Input.is_action_pressed("variant"):#cooldowns applied in the functions
 				ability_2_variant()
 			else:
 				ability_2()
+	
+	if Input.is_action_pressed("ability_3"):
+		if a3_cd <= 0 and state == states.MOVING and not silenced:
+			ability_3()
+	
+	if Input.is_action_pressed("ultimate"):
+		if a4_cd <= 0 and state == states.MOVING and not silenced:
+			ability_4()
 
 
 func set_health(value):
-	health = value
 	if health > value:#if the player is losing health
+		print($HealthbarControl/HealthbarOver.max_value, " ", $HealthbarControl/HealthbarOver.value)
+		health = value
+		$HurtBox/CollisionShape2D.set_deferred("disabled", true)
 		$PlayerHitAnimator.play("player hit")#animationplayer can only play one animation at a time
-	elif health > max_health: #if the player is gaining health and it goes over the maximum
+	elif value > max_health: #if the player is gaining health and it goes over the maximum
 		health = max_health
 	
 	$HealthbarControl.on_health_updated(health)
+	print($HealthbarControl/HealthbarOver.max_value, " ", $HealthbarControl/HealthbarOver.value)
 	if health <= 0:
 # warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
@@ -225,8 +245,8 @@ func fire_bullet():
 	var bullet_instance = DataManager.PlayerBullet.instance()
 	bullet_instance.position = global_position
 	bullet_instance.direction = global_position.direction_to(get_global_mouse_position())
-	bullet_instance.damage = bullet_damage
-	DataManager.ObstaclesNode.call_deferred("add_child", bullet_instance)
+	bullet_instance.damage = attack_damage * bullet_damage
+	DataManager.ObstaclesNode.add_child(bullet_instance)
 	#if the bullet is a rigidbody use this instead vv
 	#bullet_instance.apply_impulse(Vector2(), Vector2(0,0).rotated(rotation))
 	shooting_cd = shooting_speed * att_speed_mod
@@ -267,16 +287,20 @@ func ability_1():
 	charged_bullet_instance.position = global_position
 	charged_bullet_instance.direction = get_local_mouse_position().normalized()
 	charged_bullet_instance.look_at(get_global_mouse_position())
-	charged_bullet_instance.damage = a1_damage
-	DataManager.BulletsNode.call_deferred("add_child", charged_bullet_instance)
+	charged_bullet_instance.damage = attack_damage * a1_damage
+	DataManager.BulletsNode.add_child(charged_bullet_instance)
 	state = states.CASTING
+	
+	a1_cd = a1_cooldown
+	casting_duration = a1_cast_time
+	DataManager.Interface.set_ability_on_cooldown(1, a1_cd)
 
 
 func ability_2():
 	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
 	explosion_instance.position = get_global_mouse_position()
-	explosion_instance.damage = a2_damage
-	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
+	explosion_instance.damage = attack_damage * a2_damage
+	DataManager.BulletsNode.add_child(explosion_instance)
 	state = states.CASTING
 	
 	a2_cd = a2_cooldown
@@ -284,21 +308,48 @@ func ability_2():
 	DataManager.Interface.set_ability_on_cooldown(2, a2_cd)
 
 func ability_2_variant():
-	var explosion_instance = DataManager.PlayerExplosionAbility.instance()
-	explosion_instance.position = get_global_mouse_position()
-	explosion_instance.flash_variant = true
-	explosion_instance.damage = a2_damage_variant
-	DataManager.BulletsNode.call_deferred("add_child", explosion_instance)
+	var remote_explosion_instance = DataManager.PlayerExplosionAbility.instance()
+	remote_explosion_instance.position = get_global_mouse_position()
+	remote_explosion_instance.flash_variant = true
+	remote_explosion_instance.damage = attack_damage * a2_damage_variant
+	DataManager.BulletsNode.add_child(remote_explosion_instance)
 	state = states.CASTING
 	
+	#sliced in half due to it being the variant
 	a2_cd = a2_cooldown * 0.5
 	casting_duration = a2_cast_time * 0.5
 	DataManager.Interface.set_ability_on_cooldown(2, a2_cd)
 
+
+func ability_3():
+	var blast_instance = DataManager.PlayerBlastAbility.instance()
+	blast_instance.damage = attack_damage * a3_damage
+	add_child(blast_instance)
+	state = states.CASTING
+	
+	a3_cd = a3_cooldown
+	casting_duration = a3_cast_time
+	DataManager.Interface.set_ability_on_cooldown(3, a3_cd)
+
+
+func ability_4():
+	var strike_barrage_instance = DataManager.PlayerStrikeBarrageAbility.instance()
+	strike_barrage_instance.damage = attack_damage * a4_damage
+	strike_barrage_instance.look_at(get_local_mouse_position())
+	add_child(strike_barrage_instance)
+	state = states.CASTING
+	movement += movement_input * (acceleration * 10)
+	movement = movement.clamped(base_speed * 1.4)
+	
+	a4_cd = a4_cooldown
+	casting_duration = a4_cast_time
+	DataManager.Interface.set_ability_on_cooldown(4, a4_cd)
+
+
 func _on_MeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):
-		body.health -= melee_dmg
+		body.health -= attack_damage * melee_damage
 
 func _on_CircularMeleeHitbox_body_entered(body):
 	if body.is_in_group("enemy"):
-		body.health -= melee_dmg * 1.25
+		body.health -= attack_damage * melee_damage * 1.25

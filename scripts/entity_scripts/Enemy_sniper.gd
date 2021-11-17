@@ -4,16 +4,16 @@ enum states{IDLE, CHASE, SHOOT, FLEE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var base_speed = 160
+var base_speed = 160.0
 var speed = base_speed
-var base_acceleration = 50
+var base_acceleration = 50.0
 var acceleration = base_acceleration #the higher, the tighter it turns around
 var movement = Vector2.ZERO
 var friction = 0.88 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var base_max_health = 16
+var base_max_health = 160.0
 var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
@@ -24,10 +24,10 @@ var health = max_health setget set_health
 #	if they get closer than 20% distance, flee from them
 #	if they get further than 80% distance, chase them
 #		this makes it so there's a buffer distance so the enemy doesn't "jitter" when the player is on the edge
-var detection_range = 1000
+var detection_range = 1000.0
 onready var shooting_distance = detection_range * 0.70
 onready var rechase_distance = detection_range * 0.80
-onready var flee_distance = 160 #the other two may vary but this one is better if it's fixed
+onready var flee_distance = 160.0 #the other two may vary but this one is better if it's fixed
 
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
@@ -37,8 +37,9 @@ var damaged_oor = false #when damaged out of range the enemy will chase the play
 
 ########## - OFFENSIVE STATS - ##########
 var attack_speed = 1.35
-var attack_cd = 0
-var attack_damage = 5
+var attack_cd = 0.0
+var base_attack_damage = 50.0
+var attack_damage = base_attack_damage
 ##############################
 
 ########## - MODIFIERS - ##########
@@ -89,7 +90,7 @@ func _physics_process(delta):
 				bullet_instance.position = global_position
 				bullet_instance.direction = global_position.direction_to(player_global_pos)
 				bullet_instance.damage = attack_damage
-				DataManager.BulletsNode.call_deferred("add_child", bullet_instance)
+				DataManager.BulletsNode.add_child(bullet_instance)
 				attack_cd = attack_speed * att_speed_mod
 			
 			if player_distance <= flee_distance:

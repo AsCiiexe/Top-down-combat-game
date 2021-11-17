@@ -2,7 +2,7 @@
 
 [ext_resource path="res://sprites/circle.png" type="Texture" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
-[ext_resource path="res://scripts/instance_scripts/PlayerChargedBullet.gd" type="Script" id=3]
+[ext_resource path="res://scripts/instance_scripts/player/PlayerChargedBullet.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 height = 17.6

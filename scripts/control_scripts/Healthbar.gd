@@ -8,7 +8,10 @@ export(Color) var bar_critical_color = Color.darkgray
 
 func _ready():
 	healthbarOver.max_value = get_parent().max_health
+	healthbarOver.value = healthbarOver.max_value
 	healthbarUnder.max_value = get_parent().max_health
+	healthbarUnder.value = healthbarUnder.max_value
+	
 	healthbarOver.modulate = bar_color
 
 

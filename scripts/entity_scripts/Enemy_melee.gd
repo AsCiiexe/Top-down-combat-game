@@ -10,23 +10,23 @@ enum states{IDLE, CHASE, MELEE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var base_speed = 230
+var base_speed = 230.0
 var speed = base_speed
-var base_acceleration = 80 #the higher, the tighter it turns around
+var base_acceleration = 80.0 #the higher, the tighter it turns around
 var acceleration = base_acceleration
 var movement = Vector2.ZERO
 var friction = 0.45 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var base_max_health = 22
+var base_max_health = 220.0
 var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
 
 ########## - DETECTION - ##########
-var detection_range = 650
-var attack_range = 60
+var detection_range = 650.0
+var attack_range = 60.0
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
 
@@ -35,9 +35,10 @@ var d_oor_distance = detection_range * 0.75 #how far it will chase the player be
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
-var attack_damage = 2
-var attack_speed = 1 #how frequently this enemy attacks
-var attack_cd = 0
+var base_attack_damage = 20.0
+var attack_damage = base_attack_damage
+var attack_speed = 1.0 #how frequently this enemy attacks
+var attack_cd = 0.0
 ##############################
 
 ########## - MODIFIERS - ##########

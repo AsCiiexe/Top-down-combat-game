@@ -1,9 +1,12 @@
 extends Node
 
 #this node should be where autoloads and node references are allocated
-onready var PlayerBullet = preload("res://instances/attacks&explosions/PlayerBullet.tscn")
-onready var PlayerChargedBullet = preload("res://instances/attacks&explosions/PlayerChargedBullet.tscn")
-onready var PlayerExplosionAbility = preload("res://instances/attacks&explosions/PlayerExplosionAbility.tscn")
+onready var PlayerBullet = preload("res://instances/attacks&explosions/player/PlayerBullet.tscn")
+onready var PlayerChargedBullet = preload("res://instances/attacks&explosions/player/PlayerChargedBullet.tscn")
+onready var PlayerExplosionAbility = preload("res://instances/attacks&explosions/player/PlayerExplosionAbility.tscn")
+onready var PlayerBlastAbility = preload("res://instances/attacks&explosions/player/PlayerBlastAbility.tscn")
+onready var PlayerStrikeBarrageAbility = preload("res://instances/attacks&explosions/player/PlayerStrikeBarrage.tscn")
+
 onready var RangerBullet = preload("res://instances/attacks&explosions/RangerBullet.tscn")
 onready var SniperBullet = preload("res://instances/attacks&explosions/SniperBullet.tscn")
 onready var Explosion = preload("res://instances/attacks&explosions/Explosion.tscn")
@@ -12,7 +15,7 @@ onready var BoolMod = preload("res://instances/modifiers/BoolMod.tscn")
 onready var SimpleMod = preload("res://instances/modifiers/SimpleMod.tscn")
 onready var TickingMod = preload("res://instances/modifiers/TickingMod.tscn")
 
-onready var HealingSpr = preload("res://sprites/modifier_icons/healing.png")
+onready var HealSpr = preload("res://sprites/modifier_icons/healing.png")
 onready var DropSpr = preload("res://sprites/modifier_icons/drop.png")
 onready var SwirlSpr = preload("res://sprites/modifier_icons/stun.png")
 onready var ChainSpr = preload("res://sprites/modifier_icons/root.png")

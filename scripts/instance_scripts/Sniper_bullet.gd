@@ -4,7 +4,7 @@ var speed = 2800
 var direction = Vector2.ZERO
 var lifespan = 2.25
 var count = 0
-var damage = 5
+var damage = 50.0
 var deleted = false
 
 func _ready():

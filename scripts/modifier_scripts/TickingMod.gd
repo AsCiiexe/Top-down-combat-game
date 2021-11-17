@@ -43,7 +43,7 @@ var modified_percentage_amount = 0.0 #due to % being updateable this is stored i
 #	modifier.starting_amount = 0.0 #flat speed that is removed on start
 #	modifier.starting_percentage_amount = -0.2 #20% of the speed is lost on start
 #	modifier.give_back_on_end = true #speed goes back to normal after the modifer ends
-#	entity.call_deferred("add_child", modifier)
+#	entity.add_child(modifier)
 #else:
 #	entity.get_node(modifier).refresh_modifier() #if it does already have the mod, refresh its effect
 #####################################################
@@ -61,8 +61,16 @@ func _ready():
 		match mod_type:
 			variable_stats.HEALTH:
 				original_stat = get_parent().max_health #O_S instead of health it's gonna be max_health for better use
-				if not get_parent().health == original_stat: #this so give_back won't harm when healing at max health
+				#this check is so give_back won't harm when healing at max health
+				if not get_parent().health == original_stat or amount < 0.0 or percentage_amount < 0.0:
 					get_parent().health += starting_amount + original_stat * starting_percentage_amount
+				
+				if amount > 0 or percentage_amount > 0:
+					$Sprite.texture = DataManager.HealSpr
+					$Sprite.modulate = "ef3a3e"
+				else:
+					$Sprite.texture = DataManager.DropSpr
+					$Sprite.modulate = "2c720c"
 			variable_stats.DAMAGE:
 				original_stat = get_parent().attack_damage
 				get_parent().attack_damage += starting_amount + original_stat * starting_percentage_amount
@@ -120,7 +128,7 @@ func _on_Tickrate_timeout():
 	match mod_type:
 		variable_stats.HEALTH:
 			#this is so give_back won't harm when healing at max health
-			if not get_parent().health == original_stat:
+			if not get_parent().health == original_stat or amount < 0.0 or percentage_amount < 0.0:
 				get_parent().health += amount + original_stat * percentage_amount
 				modified_percentage_amount += original_stat * percentage_amount
 				modified_amount += amount

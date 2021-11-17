@@ -4,7 +4,7 @@ var speed = 1250
 var direction = Vector2.ZERO
 var lifespan = 2.25
 var count = 0
-var damage = 1
+var damage = 1.0
 
 
 func _physics_process(delta):

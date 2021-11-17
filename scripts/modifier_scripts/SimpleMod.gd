@@ -23,7 +23,7 @@ var original_stat = 0.0 #the number this stat was at before this modifier was ap
 #	modifier.mod_duration = 7.0 #lasts 7 seconds
 #	modifier.amount = 0.0 #flat amount that is modified
 #	modifier.percentage_amount = 0.2 #percentage amount that is modified
-#	entity.call_deferred("add_child", modifier)
+#	entity.add_child(modifier)
 #else:
 #	entity.get_node(modifier).refresh_modifier() #if it does already have the mod, refresh its effect
 #####################################################
@@ -40,11 +40,16 @@ func _ready():
 			variable_stats.SPEED:
 				original_stat = get_parent().speed
 				get_parent().speed += amount + original_stat * percentage_amount
+				
+				if amount > 0 or percentage_amount > 0:
+					$Sprite.texture = DataManager.HasteSpr
+				else:
+					$Sprite.texture = DataManager.SlowSpr
 			variable_stats.ATTACK_SPEED:
 				original_stat = get_parent().attack_speed
 				get_parent().attack_speed += original_stat * percentage_amount
 			variable_stats.UNASSIGNED:
-				print("UNASSIGNED MOD TYPE")
+				print("UNASSIGNED SIMPLE MOD TYPE")
 				queue_free()
 	
 	$DurationTimer.start(mod_duration)

@@ -4,22 +4,22 @@ enum states {IDLE, CHASE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var base_speed = 280
+var base_speed = 280.0
 var speed = base_speed
-var base_acceleration = 175
+var base_acceleration = 175.0
 var acceleration = base_acceleration #the higher, the tighter it turns around
 var movement = Vector2.ZERO
 var friction = 0.85 #the higher, the more slippery it will be
 ##############################
 
 ########## - DEFENSIVE STATS - ##########
-var base_max_health = 12
+var base_max_health = 120.0
 var max_health = base_max_health
 var health = max_health setget set_health
 ##############################
 
 ########## - DETECTION - ##########
-var detection_range = 650
+var detection_range = 650.0
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
 
@@ -28,7 +28,8 @@ var d_oor_distance = detection_range * 0.75 #how far it will chase the player be
 ##############################
 
 ########## - OFFENSIVE STATS - ##########
-var attack_damage = 7.5
+var base_attack_damage = 75.0
+var attack_damage = base_attack_damage
 var explosion_distance = 45.0 #how far the player has to be for this enemy to detonate
 ##############################
 
@@ -94,6 +95,6 @@ func explode():
 		DataManager.Player.health -= attack_damage
 		var explosion = DataManager.Explosion.instance()
 		explosion.position = global_position
-		get_tree().get_root().call_deferred("add_child", explosion)
+		get_tree().get_root().add_child(explosion)
 		
 		queue_free()
