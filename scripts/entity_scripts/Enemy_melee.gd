@@ -10,7 +10,7 @@ enum states{IDLE, CHASE, MELEE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var base_speed = 230.0
+var base_speed = 240.0
 var speed = base_speed
 var base_acceleration = 80.0 #the higher, the tighter it turns around
 var acceleration = base_acceleration
@@ -26,7 +26,7 @@ var health = max_health setget set_health
 
 ########## - DETECTION - ##########
 var detection_range = 650.0
-var attack_range = 60.0
+var attack_range = 70.0
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
 
@@ -92,6 +92,7 @@ func _physics_process(delta):
 		if player_distance < d_oor_distance:
 			damaged_oor = false
 	
+	movement += $SoftCollisions.get_push_vector()
 	movement = move_and_slide(movement)
 
 

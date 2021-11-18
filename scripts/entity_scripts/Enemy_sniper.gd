@@ -27,7 +27,7 @@ var health = max_health setget set_health
 var detection_range = 1000.0
 onready var shooting_distance = detection_range * 0.70
 onready var rechase_distance = detection_range * 0.80
-onready var flee_distance = 160.0 #the other two may vary but this one is better if it's fixed
+onready var flee_distance = 200.0 #the other two may vary but this one is better if it's fixed
 
 var player_distance = detection_range + 1 #so it always starts idle
 var player_global_pos = Vector2.ZERO
@@ -113,6 +113,7 @@ func _physics_process(delta):
 		if state == states.SHOOT:
 			damaged_oor = false
 	
+	movement += $SoftCollisions.get_push_vector()
 	movement = move_and_slide(movement)
 
 func _draw():

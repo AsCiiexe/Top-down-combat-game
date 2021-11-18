@@ -30,16 +30,16 @@ var attack_damage = base_attack_damage
 #basic shooting
 var shooting_speed = 0.35
 var shooting_cd = 0.0
-var shooting_slow = 0.65 #while shooting the character moves slower for the duration of the shot cd
+var shooting_slow = 0.6 #while shooting the character moves slower for the duration of the shot cd
 var bullet_damage = 1.0
 
 #basic melee
 var melee_cooldown = 0.38 #how fast the player attacks
 var melee_cd = 0.0 #current attack cd
 var combo_cd = 0.0 #the time in which if the player attacks again the combo will continue instead of starting again
-var melee_damage = 2.0 #regular melee attack dmg
+var melee_damage = 1.8 #regular melee attack dmg
 export var combo = 0.0 #current combo iteration, exported for the animation player to be able to continue the combo
-var melee_slow = 0.5 #how slow the player moves while doing a melee attack
+var melee_slow = 0.65 #how slow the player moves while doing a melee attack
 ######################################
 
 ########## - ABILITIES - ##########
@@ -70,7 +70,7 @@ var a3_damage =  6.0
 var a4_cooldown = 6.0
 var a4_cd = 0.0
 var a4_cast_time = 1.0
-var a4_damage = 1.6
+var a4_damage = 1.8
 
 #dash
 var dash_target = Vector2.ZERO #dash target in global coords
@@ -95,8 +95,46 @@ var cooldown_reduction = 1.0 #CDR is always multiplicative (NOTE: still not impl
 var att_speed_mod = 1.0 #Same as cdr but for basic attacks, it applies equally and to both melee and ranged
 ###################################
 
+#ITEM IDEAS:
+#simple:
+#	shoulder pauldrons for dmg reduction
+#	fire ember for extra damage
+#	electric spark for attack speed and cooldown reduction
+#	winged boots for movespeed, tenacity, longer and faster dash
+#	life seed for tiny amount of passive health regen and healing when killing enemies
+#
+#consumable:
+#	red potion for health regen
+#	green potion for throwing an area poison effect with slow
+#	purple potion for health decay, attack damage buff, movespeed buff and damage reduction
+#	orange potion for burning on attacks
+#	blue potion for temporary time stop (stunning all enemies around), if an ability is used the effect stops aswell
+#
+#complex:
+#	mage cape for ice mage, now abilities slow and freeze.
+#		New ability: cone of cold, like blast but in a cone and freezes frostbite enemies. Replaces barrage
+#		Blast is bigger, slows and applies frostbite
+#		explosion is bigger, freezes enemies with frostbite and applies to those who don't have it
+#		projectile deals extra damage to frostbite or frozen enemies
+#		ranged attacks refresh frostbite
+#	werewolf curse, now melee attacks heal.
+#		New ability: bite leap. replaces explosion, dashes short distance, does healing dmg to first enemy hit, slows
+#		barrage is faster
+#		blast fears enemies away
+#		missile applies bleeding and can only hit one enemy
+#	gunslinger pistols:
+#		higher ranged attack speed and slows less
+#		new ability: blasting pistols. replaces barrage, shoots a barrage of bullets at half attack speed that slow
+#		casting slow slows less
+#		blast knocks back enemies
+#		dash cooldown is shorter
+#		explosion always stuns and 
+#		missile does more damage
+#		
+
 
 func _physics_process(delta):
+	print(delta)
 	refresh_cooldowns(delta)
 	get_input()
 	match state:
@@ -138,6 +176,7 @@ func _physics_process(delta):
 				collision_mask = 3 #if either the layer OR mask collides with bodies still counted as collisions
 				state = states.MOVING
 	
+	movement += $SoftCollisions.get_push_vector()
 	movement = move_and_slide(movement)
 
 
@@ -178,7 +217,7 @@ func get_input():
 		if melee_cd <= 0 and state == states.MOVING and shooting_cd <= 0 and not disarmed:
 			melee_attack()
 	
-	if Input.is_action_just_released("dash"):
+	if Input.is_action_pressed("dash"):
 		if dash_cd <= 0 and state == states.MOVING and not silenced and not rooted:
 			dash()
 			#cooldown is applied when the dash ends instead of when it starts
@@ -205,7 +244,6 @@ func get_input():
 
 func set_health(value):
 	if health > value:#if the player is losing health
-		print($HealthbarControl/HealthbarOver.max_value, " ", $HealthbarControl/HealthbarOver.value)
 		health = value
 		$HurtBox/CollisionShape2D.set_deferred("disabled", true)
 		$PlayerHitAnimator.play("player hit")#animationplayer can only play one animation at a time
@@ -213,7 +251,6 @@ func set_health(value):
 		health = max_health
 	
 	$HealthbarControl.on_health_updated(health)
-	print($HealthbarControl/HealthbarOver.max_value, " ", $HealthbarControl/HealthbarOver.value)
 	if health <= 0:
 # warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
@@ -284,7 +321,7 @@ func melee_attack():
 
 func ability_1():
 	var charged_bullet_instance = DataManager.PlayerChargedBullet.instance()
-	charged_bullet_instance.position = global_position
+	charged_bullet_instance.position = global_position + (get_local_mouse_position().normalized() * 10)
 	charged_bullet_instance.direction = get_local_mouse_position().normalized()
 	charged_bullet_instance.look_at(get_global_mouse_position())
 	charged_bullet_instance.damage = attack_damage * a1_damage

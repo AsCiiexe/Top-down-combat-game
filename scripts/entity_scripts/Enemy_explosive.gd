@@ -4,7 +4,7 @@ enum states {IDLE, CHASE}
 var state = states.IDLE
 
 ########## - MOVEMENT - ##########
-var base_speed = 280.0
+var base_speed = 290.0
 var speed = base_speed
 var base_acceleration = 175.0
 var acceleration = base_acceleration #the higher, the tighter it turns around

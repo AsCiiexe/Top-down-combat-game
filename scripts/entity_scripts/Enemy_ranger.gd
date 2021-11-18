@@ -88,6 +88,7 @@ func _physics_process(delta):
 		if player_distance < d_oor_distance:
 			damaged_oor = false
 	
+	movement += $SoftCollisions.get_push_vector()
 	movement = move_and_slide(movement)
 
 

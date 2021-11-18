@@ -266,3 +266,35 @@ fill_mode = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Inventory" type="ColorRect" parent="."]
+margin_right = 211.0
+margin_bottom = 49.0
+color = Color( 0, 0.415686, 1, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Item1" type="TextureRect" parent="Inventory"]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 44.0
+margin_bottom = 44.0
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Item2" type="TextureRect" parent="Inventory"]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 50.0
+margin_top = 4.0
+margin_right = 90.0
+margin_bottom = 44.0
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

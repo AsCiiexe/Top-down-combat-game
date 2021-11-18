@@ -68,6 +68,45 @@ position = Vector2( 1768.82, 919.348 )
 [node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
 position = Vector2( -206.787, 1040.29 )
 
+[node name="EnemyMelee2" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 58.9191, 483.506 )
+
+[node name="EnemyMelee3" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 175.804, 531.437 )
+
+[node name="EnemyMelee4" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 158.986, 491.915 )
+
+[node name="EnemyMelee5" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 107.691, 448.188 )
+
+[node name="EnemyMelee14" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 107.691, 448.188 )
+
+[node name="EnemyMelee6" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 11.8289, 442.302 )
+
+[node name="EnemyMelee7" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 77.4188, 505.369 )
+
+[node name="EnemyMelee8" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 106.009, 488.551 )
+
+[node name="EnemyMelee9" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 116.1, 521.346 )
+
+[node name="EnemyMelee10" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 140.486, 530.596 )
+
+[node name="EnemyMelee11" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 115.259, 543.21 )
+
+[node name="EnemyMelee12" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 133.759, 502.847 )
+
+[node name="EnemyMelee13" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 80.7824, 472.574 )
+
 [node name="EnemyRanger" parent="Entities" instance=ExtResource( 4 )]
 position = Vector2( 1790, 93 )
 

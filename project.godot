@@ -116,7 +116,11 @@ restart={
 2d_physics/layer_2="entity hitboxes"
 2d_physics/layer_3="player hurtbox"
 2d_physics/layer_4="enemy hurtbox"
-2d_physics/layer_5="player detection"
+2d_physics/layer_5="entity collisions"
+
+[network]
+
+limits/debugger_stdout/max_messages_per_frame=20
 
 [physics]
 

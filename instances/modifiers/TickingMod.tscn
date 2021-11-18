@@ -15,7 +15,7 @@ wait_time = 0.1
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.937255, 0.227451, 0.243137, 1 )
-position = Vector2( -16, -40 )
+position = Vector2( -16, -54 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 
