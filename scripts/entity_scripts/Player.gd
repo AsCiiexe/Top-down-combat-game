@@ -21,6 +21,7 @@ var movement_input = Vector2.ZERO
 var base_max_health = 200.0
 var max_health = base_max_health
 var health = max_health setget set_health
+var wounding_modifier = 1.0 #this is for reducing/augmenting a % of TAKEN DAMAGE, not the damage that is DEALT
 #########################################
 
 var base_attack_damage = 10.0
@@ -134,7 +135,6 @@ var att_speed_mod = 1.0 #Same as cdr but for basic attacks, it applies equally a
 
 
 func _physics_process(delta):
-	print(delta)
 	refresh_cooldowns(delta)
 	get_input()
 	match state:
@@ -243,8 +243,8 @@ func get_input():
 
 
 func set_health(value):
-	if health > value:#if the player is losing health
-		health = value
+	if value < health:#if the player is losing health
+		health -= (health - value) * wounding_modifier
 		$HurtBox/CollisionShape2D.set_deferred("disabled", true)
 		$PlayerHitAnimator.play("player hit")#animationplayer can only play one animation at a time
 	elif value > max_health: #if the player is gaining health and it goes over the maximum

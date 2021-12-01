@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/entity_scripts/Enemy_explosive.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
@@ -7,9 +7,6 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.4859, 15.4126 )
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 22.0
 
 [node name="EnemyExplosive" type="KinematicBody2D" groups=["enemy", "enemy_explosive", "entity"]]
 collision_layer = 8
@@ -28,8 +25,3 @@ shape = SubResource( 1 )
 bar_color = Color( 0.0431373, 0.92549, 0.0784314, 1 )
 
 [node name="SoftCollisions" parent="." instance=ExtResource( 4 )]
-
-[node name="CollisionShape2D" parent="SoftCollisions" index="0"]
-shape = SubResource( 2 )
-
-[editable path="SoftCollisions"]

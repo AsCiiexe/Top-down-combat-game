@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/entity_scripts/Enemy_melee.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
@@ -54,9 +54,6 @@ tracks/2/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="CircleShape2D" id=4]
-radius = 22.0
-
 [node name="EnemyMelee" type="KinematicBody2D" groups=["enemy", "enemy_melee", "entity"]]
 collision_layer = 8
 script = ExtResource( 1 )
@@ -103,9 +100,4 @@ anims/attack = SubResource( 3 )
 
 [node name="SoftCollisions" parent="." instance=ExtResource( 5 )]
 
-[node name="CollisionShape2D" parent="SoftCollisions" index="0"]
-shape = SubResource( 4 )
-
 [connection signal="area_entered" from="AttackDirection/AttackHitbox" to="." method="_on_AttackHitbox_area_entered"]
-
-[editable path="SoftCollisions"]

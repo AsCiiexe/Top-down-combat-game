@@ -25,5 +25,3 @@ shape = SubResource( 1 )
 bar_color = Color( 0.0431373, 0.92549, 0.0784314, 1 )
 
 [node name="SoftCollisions" parent="." instance=ExtResource( 4 )]
-
-[editable path="SoftCollisions"]

@@ -22,6 +22,8 @@ onready var ChainSpr = preload("res://sprites/modifier_icons/root.png")
 onready var HasteSpr = preload("res://sprites/modifier_icons/haste.png")
 onready var SlowSpr = preload("res://sprites/modifier_icons/slow.png")
 
+onready var BlueShieldSpr = preload("res://sprites/item_sprites/blue_shield.png")
+
 onready var Player = get_tree().get_root().get_node("World/Entities/Player")
 onready var BulletsNode = get_tree().get_root().get_node("World/Bullets")
 onready var ObstaclesNode = get_tree().get_root().get_node("World/Obstacles")

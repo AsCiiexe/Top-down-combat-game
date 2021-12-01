@@ -6,8 +6,10 @@ onready var ability2_cd_bar = $Skillbar/Ability2/TextureProgress
 onready var ability3_cd_bar = $Skillbar/Ability3/TextureProgress
 onready var ability4_cd_bar = $Skillbar/Ability4/TextureProgress
 
-onready var item1_slot = $Inventory/Item1
-onready var item2_slow = $Inventory/Item2
+onready var item1_spr = $Inventory/Item1/TextureRect
+onready var item2_spr = $Inventory/Item2/TextureRect
+onready var item3_spr = $Inventory/Item3/TextureRect
+onready var item4_spr = $Inventory/Item4/TextureRect
 
 
 func _ready():
@@ -44,8 +46,23 @@ func set_ability_on_cooldown(ability, cooldown):
 		ability4_cd_bar.max_value = cooldown
 		ability4_cd_bar.value = cooldown
 
+#temporary variable
+#automatically adds an item to lowest empty spot, if they are all full the first one is replaced
+func add_item(item):
+	if item1_spr.texture == null:
+		item1_spr.texture = item
+	elif item2_spr.texture == null:
+		item2_spr.texture = item
+	elif item3_spr.texture == null:
+		item3_spr.texture = item
+	elif item4_spr.texture == null:
+		item4_spr.texture = item
+	else:
+		print("MAXIMUM ITEM SLOTS")
+
 
 func set_item(slot, item):
 	pass
+
 
 
