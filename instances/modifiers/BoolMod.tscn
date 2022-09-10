@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scripts/modifier_scripts/BoolMod.gd" type="Script" id=1]
+[ext_resource path="res://scripts/modifier_scripts[DEPRECATED]/BoolMod.gd" type="Script" id=1]
 [ext_resource path="res://sprites/modifier_icons/stun.png" type="Texture" id=2]
 
 [node name="BoolMod" type="Node2D"]

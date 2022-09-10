@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/instance_scripts/SoftCollisions.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 22.0
+radius = 20.0
 
 [node name="SoftCollisions" type="Area2D"]
 collision_layer = 16

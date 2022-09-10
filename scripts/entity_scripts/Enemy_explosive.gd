@@ -30,7 +30,7 @@ var d_oor_distance = detection_range * 0.75 #how far it will chase the player be
 ########## - OFFENSIVE STATS - ##########
 var base_attack_damage = 75.0
 var attack_damage = base_attack_damage
-var explosion_distance = 45.0 #how far the player has to be for this enemy to detonate
+var explosion_distance = 50.0 #how far the player has to be for this enemy to detonate
 ##############################
 
 ########## - MODIFIERS - ##########
@@ -50,7 +50,6 @@ func _physics_process(delta):
 	if DataManager.Player != null:
 		player_global_pos = DataManager.Player.global_position
 		player_distance = global_position.distance_to(player_global_pos)
-	
 	match state:
 		states.IDLE:
 			movement *= friction
@@ -91,7 +90,7 @@ func set_health(value):
 		state = states.CHASE
 
 
-func explode():
+func explode_no_check(): #will explode regardless of if the player is currently invulnerable
 	if not stunned and not silenced:
 		DataManager.Player.health -= attack_damage
 		var explosion = DataManager.Explosion.instance()
@@ -99,3 +98,15 @@ func explode():
 		get_tree().get_root().add_child(explosion)
 		
 		queue_free()
+
+func explode(): #will only explode if the player is vulnerable
+	if not stunned and not silenced:
+		if DataManager.Player.get_node("PlayerHitAnimator").is_playing() == true:
+			return
+		DataManager.Player.health -= attack_damage
+		var explosion = DataManager.Explosion.instance()
+		explosion.position = global_position
+		get_tree().get_root().add_child(explosion)
+		
+		queue_free()
+

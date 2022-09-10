@@ -43,11 +43,11 @@ __meta__ = {
 }
 
 [node name="StaticBody2D" parent="Obstacles" instance=ExtResource( 5 )]
-position = Vector2( 574.751, 749.554 )
+position = Vector2( 574.751, 758.804 )
 scale = Vector2( 5, 5 )
 
 [node name="StaticBody2D2" parent="Obstacles" instance=ExtResource( 5 )]
-position = Vector2( 956.138, 622.735 )
+position = Vector2( 956.138, 631.985 )
 scale = Vector2( 7, 1 )
 
 [node name="Bullets" type="Node2D" parent="."]
@@ -61,97 +61,19 @@ __meta__ = {
 }
 
 [node name="Player" parent="Entities" instance=ExtResource( 1 )]
-position = Vector2( 530.29, 317.526 )
+position = Vector2( 501.974, 294.873 )
 
 [node name="EnemyExplosive" parent="Entities" instance=ExtResource( 2 )]
 position = Vector2( 1768.82, 919.348 )
-
-[node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -61.3688, 901.936 )
-
-[node name="EnemyMelee15" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -23.6138, 912.791 )
-
-[node name="EnemyMelee16" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 23.8159, 909.252 )
-
-[node name="EnemyMelee17" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -99.8316, 933.792 )
-
-[node name="EnemyMelee18" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -71.7514, 941.343 )
-
-[node name="EnemyMelee19" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -0.488884, 840.113 )
-
-[node name="EnemyMelee20" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 20.5123, 807.785 )
-
-[node name="EnemyMelee21" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -10.189, 802.446 )
-
-[node name="EnemyMelee22" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -40.2229, 783.758 )
-
-[node name="EnemyMelee23" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -40.2229, 783.758 )
-
-[node name="EnemyMelee2" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -121.982, 863.773 )
-
-[node name="EnemyMelee3" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -121.982, 863.773 )
-
-[node name="EnemyMelee4" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -121.982, 863.773 )
-
-[node name="EnemyMelee5" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -28.8174, 868.263 )
-
-[node name="EnemyMelee10" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -28.8174, 868.263 )
-
-[node name="EnemyMelee8" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 51.9999, 835.711 )
-
-[node name="EnemyMelee9" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( 31.7956, 871.63 )
-
-[node name="EnemyMelee11" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -49.6285, 848.666 )
-
-[node name="EnemyMelee24" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -38.2824, 815.962 )
-
-[node name="EnemyMelee25" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -76.9928, 815.295 )
-
-[node name="EnemyMelee26" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -88.3389, 775.917 )
-
-[node name="EnemyMelee27" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -136.393, 812.625 )
-
-[node name="EnemyMelee12" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -77.0833, 857.038 )
-
-[node name="EnemyMelee13" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -101.777, 827.854 )
-
-[node name="EnemyMelee14" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -121.011, 781.712 )
-
-[node name="EnemyMelee6" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -115.247, 898.569 )
-
-[node name="EnemyMelee7" parent="Entities" instance=ExtResource( 3 )]
-position = Vector2( -115.247, 898.569 )
 
 [node name="EnemyRanger" parent="Entities" instance=ExtResource( 4 )]
 position = Vector2( 1790, 93 )
 
 [node name="EnemySniper" parent="Entities" instance=ExtResource( 6 )]
-position = Vector2( -545, -11 )
+position = Vector2( -338.467, -334.269 )
+
+[node name="EnemyMelee" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( -236.289, 742.866 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
@@ -164,6 +86,9 @@ __meta__ = {
 [node name="Foreground" type="CanvasLayer" parent="."]
 
 [node name="Interface" parent="Foreground" instance=ExtResource( 10 )]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
@@ -181,4 +106,4 @@ __meta__ = {
 }
 
 [node name="MagicShield" parent="." instance=ExtResource( 11 )]
-position = Vector2( -291.646, 435.393 )
+position = Vector2( 819.591, 509.475 )

@@ -9,7 +9,7 @@ func _physics_process(delta):
 		#draw "press c to pick up" and display item name
 		if Input.is_action_just_pressed("interact"):
 			DataManager.Player.add_child(self)
-			DataManager.Player.wounding_modifier += harm_reduction
+			DataManager.Player.defense_modifier += harm_reduction
 			DataManager.Interface.add_item(DataManager.BlueShieldSpr)
 			visible = false
 			

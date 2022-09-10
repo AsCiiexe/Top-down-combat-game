@@ -220,7 +220,6 @@ collision_layer = 4
 collision_mask = 0
 input_pickable = false
 monitoring = false
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 visible = false

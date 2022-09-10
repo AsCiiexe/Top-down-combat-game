@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scripts/modifier_scripts/SimpleMod.gd" type="Script" id=1]
+[ext_resource path="res://scripts/modifier_scripts[DEPRECATED]/SimpleMod.gd" type="Script" id=1]
 [ext_resource path="res://sprites/modifier_icons/haste.png" type="Texture" id=2]
 
 [node name="SimpleMod" type="Node2D"]

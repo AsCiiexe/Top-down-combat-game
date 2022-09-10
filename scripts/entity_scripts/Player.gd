@@ -1,5 +1,4 @@
 extends KinematicBody2D
-
 #moving state allows to do basic attacks and move
 #casting state only allows to continue combo
 #on the future you may be able to interrupt a combo with certain moves
@@ -21,7 +20,7 @@ var movement_input = Vector2.ZERO
 var base_max_health = 200.0
 var max_health = base_max_health
 var health = max_health setget set_health
-var wounding_modifier = 1.0 #this is for reducing/augmenting a % of TAKEN DAMAGE, not the damage that is DEALT
+var defense_modifier = 1.0 #this is for reducing/augmenting a % of TAKEN DAMAGE
 #########################################
 
 var base_attack_damage = 10.0
@@ -143,7 +142,7 @@ func _physics_process(delta):
 				movement = Vector2.ZERO
 			else:
 				movement += movement_input * acceleration
-				movement = movement.clamped(speed)
+				movement = movement.limit_length(speed)
 				if movement_input == Vector2.ZERO:
 					movement *= friction
 				elif melee_cd > 0.1:
@@ -244,7 +243,7 @@ func get_input():
 
 func set_health(value):
 	if value < health:#if the player is losing health
-		health -= (health - value) * wounding_modifier
+		health -= (health - value) * defense_modifier
 		$HurtBox/CollisionShape2D.set_deferred("disabled", true)
 		$PlayerHitAnimator.play("player hit")#animationplayer can only play one animation at a time
 	elif value > max_health: #if the player is gaining health and it goes over the maximum
